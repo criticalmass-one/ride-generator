@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Criticalmass\RideGenerator\RideGenerator;
+namespace App\RideGenerator\RideGenerator;
 
-use App\Criticalmass\RideGenerator\RideCalculator\RideCalculator;
-use App\Criticalmass\RideGenerator\RideCalculator\RideCalculatorInterface;
+use App\RideGenerator\RideCalculator\RideCalculator;
+use App\RideGenerator\RideCalculator\RideCalculatorInterface;
 use App\Criticalmass\RideNamer\RideNamerListInterface;
 use App\Criticalmass\Util\DateTimeUtil;
 use App\Entity\CityCycle;

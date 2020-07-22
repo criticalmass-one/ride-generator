@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Criticalmass\RideGenerator\RideCalculator;
+namespace App\RideGenerator\RideCalculator;
 
 use App\Entity\CityCycle;
 use App\Entity\Ride;

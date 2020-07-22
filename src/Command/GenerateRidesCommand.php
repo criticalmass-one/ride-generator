@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Command\Cycles;
+namespace App\Command;
 
-use App\Criticalmass\RideGenerator\RideGenerator\CityRideGeneratorInterface;
-use App\Criticalmass\RideGenerator\RideGenerator\RideGeneratorInterface;
+use App\RideGenerator\RideGenerator\CityRideGeneratorInterface;
+use App\RideGenerator\RideGenerator\RideGeneratorInterface;
 use App\Entity\City;
 use App\Entity\Ride;
 use Doctrine\Persistence\ManagerRegistry;
