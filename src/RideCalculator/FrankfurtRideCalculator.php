@@ -2,6 +2,8 @@
 
 namespace App\RideCalculator;
 
+use App\Model\Ride;
+
 class FrankfurtRideCalculator extends RideCalculator
 {
     public function execute(): Ride
