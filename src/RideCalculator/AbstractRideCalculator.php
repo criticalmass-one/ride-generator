@@ -4,6 +4,7 @@ namespace App\RideCalculator;
 
 use App\Model\CityCycle;
 use App\Model\Ride;
+use App\RideNamer\RideNamerListInterface;
 
 abstract class AbstractRideCalculator implements RideCalculatorInterface
 {
@@ -13,14 +14,13 @@ abstract class AbstractRideCalculator implements RideCalculatorInterface
 
     protected CityCycle $cycle;
 
-    /** @var RideNamerListInterface $rideNamerList */
-    protected $rideNamerList = [];
+    protected RideNamerListInterface $rideNamerList;
 
     protected ?\DateTimeZone $timezone = null;
 
-    public function __construct()
+    public function __construct(RideNamerListInterface $rideNamerList)
     {
-        //$this->rideNamerList = $rideNamerList;
+        $this->rideNamerList = $rideNamerList;
     }
 
     public function setTimezone(\DateTimeZone $timezone): RideCalculatorInterface

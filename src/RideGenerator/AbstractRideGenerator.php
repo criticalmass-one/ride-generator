@@ -2,30 +2,22 @@
 
 namespace App\RideGenerator;
 
+use App\Model\CityCycle;
 use App\RideCalculator\RideCalculator;
 use App\RideCalculator\RideCalculatorInterface;
-use App\Criticalmass\RideNamer\RideNamerListInterface;
-use App\Criticalmass\Util\DateTimeUtil;
-use App\Entity\CityCycle;
-use App\Entity\Ride;
-use Doctrine\Persistence\ManagerRegistry;
+use App\RideNamer\RideNamerListInterface;
 
 abstract class AbstractRideGenerator implements RideGeneratorInterface
 {
-    /** @var array $dateTimeList */
-    protected $dateTimeList = [];
+    protected array $dateTimeList = [];
 
-    /** @var array $rideList */
-    protected $rideList = [];
+    protected array $rideList = [];
 
-    /** @var RideNamerListInterface $rideNamerList */
-    protected $rideNamerList;
+    protected RideNamerListInterface $rideNamerList;
 
-    public function __construct()
-    //public function __construct(ManagerRegistry $doctrine, RideNamerListInterface $rideNamerList)
+    public function __construct(RideNamerListInterface $rideNamerList)
     {
-        //$this->doctrine = $doctrine;
-        //$this->rideNamerList = $rideNamerList;
+        $this->rideNamerList = $rideNamerList;
     }
 
     public function setDateTime(\DateTime $dateTime): RideGeneratorInterface
@@ -56,11 +48,12 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
 
     protected function hasRideAlreadyBeenCreated(CityCycle $cityCycle, \DateTime $startDateTime): bool
     {
-        $endDateTime = DateTimeUtil::getMonthEndDateTime($startDateTime);
+        return false;
+        //$endDateTime = DateTimeUtil::getMonthEndDateTime($startDateTime);
 
-        $existingRides = $this->doctrine->getRepository(Ride::class)->findRidesByCycleInInterval($cityCycle, $startDateTime, $endDateTime);
+        //$existingRides = $this->doctrine->getRepository(Ride::class)->findRidesByCycleInInterval($cityCycle, $startDateTime, $endDateTime);
 
-        return count($existingRides) > 0;
+        //return count($existingRides) > 0;
     }
 
     protected function getRideCalculatorForCycle(CityCycle $cityCycle): RideCalculatorInterface

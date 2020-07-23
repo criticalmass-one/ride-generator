@@ -2,7 +2,7 @@
 
 namespace App\RideNamer;
 
-use App\Entity\Ride;
+use App\Model\Ride;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CountingEnglishRideNamer implements RideNamerInterface

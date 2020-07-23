@@ -2,9 +2,8 @@
 
 namespace App\RideGenerator;
 
-use App\Criticalmass\Cycles\DateTimeValidator\DateTimeValidator;
-use App\Criticalmass\Util\DateTimeUtil;
-use App\Entity\CityCycle;
+use App\Model\CityCycle;
+use Carbon\Carbon;
 
 class CycleRideGenerator extends AbstractRideGenerator implements CycleRideGeneratorInterface
 {
@@ -13,8 +12,9 @@ class CycleRideGenerator extends AbstractRideGenerator implements CycleRideGener
 
     public function execute(): RideGeneratorInterface
     {
+        /** @var Carbon $dateTime */
         foreach ($this->dateTimeList as $dateTime) {
-            $startDateTime = DateTimeUtil::getMonthStartDateTime($dateTime);
+            $startDateTime = $dateTime->startOfMonth();
 
             $createdRides = $this->processCycles($startDateTime);
 
@@ -37,7 +37,7 @@ class CycleRideGenerator extends AbstractRideGenerator implements CycleRideGener
                 ->setYear((int)$startDateTime->format('Y'))
                 ->execute();
 
-            if ($ride && DateTimeValidator::isValidRide($cycle, $ride)) {
+            if ($ride/* && DateTimeValidator::isValidRide($cycle, $ride)*/) {
                 $rideList[] = $ride;
             }
         }

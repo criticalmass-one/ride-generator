@@ -4,8 +4,11 @@ namespace App\Command;
 
 use App\CycleFetcher\CycleFetcherInterface;
 use App\Model\CityCycle;
+use App\Model\Ride;
 use App\RideGenerator\CityRideGeneratorInterface;
+use App\RideGenerator\CycleRideGeneratorInterface;
 use App\RideGenerator\RideGeneratorInterface;
+use Carbon\Carbon;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +23,7 @@ class GenerateRidesCommand extends Command
     protected RideGeneratorInterface $rideGenerator;
     protected CycleFetcherInterface $cycleFetcher;
 
-    public function __construct($name = null, CityRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher)
+    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher)
     {
         $this->rideGenerator = $rideGenerator;
         $this->cycleFetcher = $cycleFetcher;
@@ -82,6 +85,8 @@ class GenerateRidesCommand extends Command
 
         $cycleList = $this->cycleFetcher->fetchCycles($citySlugList);
 
+        $io->success(sprintf('Fetched %d cycles', count($cycleList)));
+
         $io->table([
             'City', 'Day of week', 'Week of month'
         ],
@@ -92,14 +97,24 @@ class GenerateRidesCommand extends Command
             ];
         }, $cycleList));
 
-        die;
+        $rideList = $this
+            ->rideGenerator
+            ->setDateTime(new Carbon())
+            ->setCycleList($cycleList)
+            ->execute()
+            ->getRideList();
 
+        $io->success(sprintf('Generated %d rides', count($rideList)));
 
-
-
-
-        $this->rideGenerator->setCityList($cityList)->execute();
-
+        $io->table([
+            'City', 'Date Time', 'Location',
+        ], array_map(function (Ride $ride): array
+        {
+            return [
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $ride->getLocation()
+            ];
+        }, $rideList));
+die;
         $table = new Table($output);
         $table->setHeaders(['City', 'DateTime Location', 'DateTime UTC', 'Location', 'Title', 'Cycle Id']);
 

@@ -2,10 +2,8 @@
 
 namespace App\RideGenerator;
 
-use App\Criticalmass\Cycles\DateTimeValidator\DateTimeValidator;
-use App\Criticalmass\Util\DateTimeUtil;
-use App\Entity\City;
-use App\Entity\CityCycle;
+use App\Model\City;
+use App\Model\CityCycle;
 
 class CityRideGenerator extends AbstractRideGenerator implements CityRideGeneratorInterface
 {

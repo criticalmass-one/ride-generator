@@ -35,6 +35,11 @@ class City
      */
     protected ?string $timezone = null;
 
+    /**
+     * @JMS\Expose()
+     */
+    protected ?string $rideNamer = null;
+
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -84,6 +89,18 @@ class City
     public function setTimezone(?string $timezone): self
     {
         $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getRideNamer(): ?string
+    {
+        return $this->rideNamer;
+    }
+
+    public function setRideNamer(?string $rideNamer): self
+    {
+        $this->rideNamer = $rideNamer;
 
         return $this;
     }

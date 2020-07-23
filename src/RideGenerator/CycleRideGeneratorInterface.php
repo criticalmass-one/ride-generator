@@ -2,7 +2,7 @@
 
 namespace App\RideGenerator;
 
-use App\Entity\CityCycle;
+use App\Model\CityCycle;
 
 interface CycleRideGeneratorInterface extends RideGeneratorInterface
 {

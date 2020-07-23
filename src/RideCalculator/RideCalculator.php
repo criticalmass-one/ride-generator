@@ -4,6 +4,9 @@ namespace App\RideCalculator;
 
 use App\Model\CityCycle;
 use App\Model\Ride;
+use App\RideNamer\GermanCityDateRideNamer;
+use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 
 class RideCalculator extends AbstractRideCalculator
 {
@@ -13,20 +16,17 @@ class RideCalculator extends AbstractRideCalculator
             return null;
         }
 
-        $dateTimeSpec = sprintf('%s-%s-01 00:00:00', $this->year, $this->month);
-        $dateTime = new \DateTime($dateTimeSpec);
+        $dateTime = Carbon::create($this->year, $this->month);
 
-        $monthStartDateTime = DateTimeUtil::getMonthStartDateTime($dateTime);
-
-        $cityTimeZone = new \DateTimeZone($this->cycle->getCity()->getTimezone());
-        $rideDateTime = DateTimeUtil::recreateAsTimeZone($monthStartDateTime, $cityTimeZone);
+        $cityTimeZone = new CarbonTimeZone($this->cycle->getCity()->getTimezone());
+        $rideDateTime = $dateTime->setTimezone($cityTimeZone);
 
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
         // yeah, first create ride and then check if it is matching the cycle range
-        if (!DateTimeValidator::isValidRide($this->cycle, $ride)) {
-            return null;
-        }
+        //if (!DateTimeValidator::isValidRide($this->cycle, $ride)) {
+        //    return null;
+        //}
 
         return $ride;
     }

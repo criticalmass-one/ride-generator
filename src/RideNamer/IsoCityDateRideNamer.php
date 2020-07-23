@@ -2,7 +2,7 @@
 
 namespace App\RideNamer;
 
-use App\Entity\Ride;
+use App\Model\Ride;
 
 class IsoCityDateRideNamer implements RideNamerInterface
 {
