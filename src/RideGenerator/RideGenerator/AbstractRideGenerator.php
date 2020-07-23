@@ -24,10 +24,11 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
     /** @var RideNamerListInterface $rideNamerList */
     protected $rideNamerList;
 
-    public function __construct(ManagerRegistry $doctrine, RideNamerListInterface $rideNamerList)
+    public function __construct()
+    //public function __construct(ManagerRegistry $doctrine, RideNamerListInterface $rideNamerList)
     {
-        $this->doctrine = $doctrine;
-        $this->rideNamerList = $rideNamerList;
+        //$this->doctrine = $doctrine;
+        //$this->rideNamerList = $rideNamerList;
     }
 
     public function setDateTime(\DateTime $dateTime): RideGeneratorInterface

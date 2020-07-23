@@ -19,20 +19,40 @@ class CycleFetcher implements CycleFetcherInterface
         $this->serializer = $serializer;
     }
 
-    public function fetchCycles(): array
+    public function fetchCycles(array $citySlugList = []): array
     {
-        $parameters = [
-            'validNow' => true,
-        ];
+        if (0 === count($citySlugList)) {
+            $parameters = [
+                'validNow' => true,
+            ];
 
+            return $this->executeFetch($parameters);
+        }
+
+        $cycleList = [];
+
+        foreach ($citySlugList as $citySlug) {
+            $parameters = [
+                'validNow' => true,
+                'citySlug' => $citySlug,
+            ];
+
+             $cycleList += $this->executeFetch($parameters);
+        }
+
+        return $cycleList;
+    }
+
+    protected function executeFetch(array $parameters): array
+    {
         $query = sprintf('/api/cycles?%s', http_build_query($parameters));
 
         $result = $this->client->get($query);
 
         $jsonContent = $result->getBody()->getContents();
 
-        $profileList = $this->serializer->deserialize($jsonContent, 'array<App\Model\CityCycle>', 'json');
+        $cycleList = $this->serializer->deserialize($jsonContent, 'array<App\Model\CityCycle>', 'json');
 
-        return $profileList;
+        return $cycleList;
     }
 }

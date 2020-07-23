@@ -2,11 +2,10 @@
 
 namespace App\Command;
 
+use App\CycleFetcher\CycleFetcherInterface;
+use App\Model\CityCycle;
 use App\RideGenerator\RideGenerator\CityRideGeneratorInterface;
 use App\RideGenerator\RideGenerator\RideGeneratorInterface;
-use App\Entity\City;
-use App\Entity\Ride;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,19 +13,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateRidesCommand extends Command
 {
-    /** @var RideGeneratorInterface $rideGenerator */
-    protected $rideGenerator;
+    protected RideGeneratorInterface $rideGenerator;
+    protected CycleFetcherInterface $cycleFetcher;
 
-    /** @var ManagerRegistry $registry */
-    protected $registry;
-
-    public function __construct($name = null, CityRideGeneratorInterface $rideGenerator, ManagerRegistry $registry)
+    public function __construct($name = null, CityRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher)
     {
         $this->rideGenerator = $rideGenerator;
-        $this->registry = $registry;
+        $this->cycleFetcher = $cycleFetcher;
 
         parent::__construct($name);
     }
@@ -63,13 +60,13 @@ class GenerateRidesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $dateTime = $input->getOption('dateTime') ? new \DateTime($input->getOption('dateTime')) : null;
         $fromDateTime = $input->getOption('from') ? new \DateTime($input->getOption('from')) : null;
         $untilDateTime = $input->getOption('until') ? new \DateTime($input->getOption('until')) : null;
 
-        $manager = $this->registry->getManager();
-
-        $cityList = $this->getCityList($input);
+        $citySlugList = $input->getArgument('cities');
 
         if ($fromDateTime && $untilDateTime) {
             $monthInterval = new \DateInterval('P1M');
@@ -82,6 +79,24 @@ class GenerateRidesCommand extends Command
         } elseif ($dateTime) {
             $this->rideGenerator->setDateTime($dateTime);
         }
+
+        $cycleList = $this->cycleFetcher->fetchCycles($citySlugList);
+
+        $io->table([
+            'City', 'Day of week', 'Week of month'
+        ],
+        array_map(function (CityCycle $cityCycle): array
+        {
+            return [
+                $cityCycle->getCity()->getName(), $cityCycle->getDayOfWeek(), $cityCycle->getWeekOfMonth(),
+            ];
+        }, $cycleList));
+
+        die;
+
+
+
+
 
         $this->rideGenerator->setCityList($cityList)->execute();
 
@@ -122,14 +137,4 @@ class GenerateRidesCommand extends Command
         $output->writeln(sprintf('Saved %d rides', $counter));
     }
 
-    protected function getCityList(InputInterface $input): array
-    {
-        $citySlugList = $input->getArgument('cities');
-
-        if (count($citySlugList) === 0) {
-            return $this->registry->getRepository(City::class)->findCities();
-        }
-
-        return $this->registry->getRepository(City::class)->findCitiesBySlugList($citySlugList);
-    }
 }
