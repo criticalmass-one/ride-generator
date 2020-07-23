@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\RideGenerator;
+namespace App\RideGenerator;
 
-use App\RideGenerator\RideCalculator\RideCalculator;
-use App\RideGenerator\RideCalculator\RideCalculatorInterface;
+use App\RideCalculator\RideCalculator;
+use App\RideCalculator\RideCalculatorInterface;
 use App\Criticalmass\RideNamer\RideNamerListInterface;
 use App\Criticalmass\Util\DateTimeUtil;
 use App\Entity\CityCycle;
@@ -17,9 +17,6 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
 
     /** @var array $rideList */
     protected $rideList = [];
-
-    /** @var ManagerRegistry $doctrine */
-    protected $doctrine;
 
     /** @var RideNamerListInterface $rideNamerList */
     protected $rideNamerList;

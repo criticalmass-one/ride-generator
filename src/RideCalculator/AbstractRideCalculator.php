@@ -1,31 +1,26 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\RideCalculator;
+namespace App\RideCalculator;
 
-use App\Criticalmass\RideNamer\RideNamerListInterface;
-use App\Entity\CityCycle;
-use App\Entity\Ride;
+use App\Model\CityCycle;
+use App\Model\Ride;
 
 abstract class AbstractRideCalculator implements RideCalculatorInterface
 {
-    /** @var int $month */
-    protected $month;
+    protected int $month;
 
-    /** @var int $year */
-    protected $year;
+    protected int $year;
 
-    /** @var CityCycle $cycle */
-    protected $cycle;
+    protected CityCycle $cycle;
 
     /** @var RideNamerListInterface $rideNamerList */
     protected $rideNamerList = [];
 
-    /** @var \DateTimeZone $timezone */
-    protected $timezone = null;
+    protected ?\DateTimeZone $timezone = null;
 
-    public function __construct(RideNamerListInterface $rideNamerList)
+    public function __construct()
     {
-        $this->rideNamerList = $rideNamerList;
+        //$this->rideNamerList = $rideNamerList;
     }
 
     public function setTimezone(\DateTimeZone $timezone): RideCalculatorInterface

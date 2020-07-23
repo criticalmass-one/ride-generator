@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\RideGenerator;
+namespace App\RideGenerator;
 
 use App\Entity\City;
 

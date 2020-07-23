@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\CycleFetcher\CycleFetcherInterface;
 use App\Model\CityCycle;
-use App\RideGenerator\RideGenerator\CityRideGeneratorInterface;
-use App\RideGenerator\RideGenerator\RideGeneratorInterface;
+use App\RideGenerator\CityRideGeneratorInterface;
+use App\RideGenerator\RideGeneratorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;

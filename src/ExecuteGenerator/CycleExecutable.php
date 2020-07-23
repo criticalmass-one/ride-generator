@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\ExecuteGenerator;
+namespace App\ExecuteGenerator;
 
-use App\RideGenerator\Validator\Constraint\ExecutorDateTime;
+use App\Validator\Constraint\ExecutorDateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

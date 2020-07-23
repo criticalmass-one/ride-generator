@@ -1,11 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\RideCalculator;
-
-use App\Criticalmass\Cycles\DateTimeValidator\DateTimeValidator;
-use App\Criticalmass\Util\DateTimeUtil;
-use App\Entity\CityCycle;
-use App\Entity\Ride;
+namespace App\RideCalculator;
 
 class FrankfurtRideCalculator extends RideCalculator
 {

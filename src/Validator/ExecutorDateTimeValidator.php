@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\RideGenerator\Validator;
+namespace App\Validator;
 
-use App\RideGenerator\ExecuteGenerator\CycleExecutable;
+use App\ExecuteGenerator\CycleExecutable;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
