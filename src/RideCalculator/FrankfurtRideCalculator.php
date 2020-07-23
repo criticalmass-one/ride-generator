@@ -2,6 +2,7 @@
 
 namespace App\RideCalculator;
 
+use App\Model\CityCycle;
 use App\Model\Ride;
 
 class FrankfurtRideCalculator extends RideCalculator

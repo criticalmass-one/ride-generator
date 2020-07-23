@@ -30,6 +30,11 @@ class City
      */
     protected array $slugs = [];
 
+    /**
+     * @JMS\Expose()
+     */
+    protected ?string $timezone = null;
+
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -69,5 +74,17 @@ class City
     public function getSlugs(): array
     {
         return $this->slugs;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): self
+    {
+        $this->timezone = $timezone;
+
+        return $this;
     }
 }
