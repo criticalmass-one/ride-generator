@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Carbon\Carbon;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -40,10 +41,10 @@ class Ride
     protected ?string $description = null;
 
     /**
-     * @JMS\Type("DateTime<'U'>")
      * @JMS\Expose()
+     * @JMS\Type("Carbon<'U'>")
      */
-    protected ?\DateTime $dateTime = null;
+    protected ?Carbon $dateTime = null;
 
     /**
      * @JMS\Expose()
@@ -62,6 +63,7 @@ class Ride
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon<'U'>")
      */
     protected \DateTime $createdAt;
 
