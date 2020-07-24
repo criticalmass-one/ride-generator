@@ -10,58 +10,58 @@ use JMS\Serializer\Annotation as JMS;
 class Ride
 {
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?int $id = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?CityCycle $cycle = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?City $city = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?string $slug = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?string $title = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?string $description = null;
 
     /**
-     * @JMS\Expose
      * @JMS\Type("DateTime<'U'>")
+     * @JMS\Expose()
      */
     protected ?\DateTime $dateTime = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?string $location = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?float $latitude = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected ?float $longitude = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      */
     protected \DateTime $createdAt;
 
