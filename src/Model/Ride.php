@@ -69,7 +69,7 @@ class Ride
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new Carbon();
     }
 
     public function setId(int $id): self

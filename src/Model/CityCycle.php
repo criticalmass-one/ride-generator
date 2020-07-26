@@ -26,7 +26,7 @@ class CityCycle
     /**
      * @JMS\Expose()
      */
-    protected ?int $id;
+    protected ?int $id = null;
 
     /**
      * @JMS\Expose()
