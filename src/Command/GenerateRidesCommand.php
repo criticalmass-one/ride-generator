@@ -8,6 +8,7 @@ use App\Model\Ride;
 use App\RideGenerator\CityRideGeneratorInterface;
 use App\RideGenerator\CycleRideGeneratorInterface;
 use App\RideGenerator\RideGeneratorInterface;
+use App\RidePusher\RidePusherInterface;
 use Carbon\Carbon;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -22,11 +23,13 @@ class GenerateRidesCommand extends Command
 {
     protected RideGeneratorInterface $rideGenerator;
     protected CycleFetcherInterface $cycleFetcher;
+    protected RidePusherInterface $ridePusher;
 
-    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher)
+    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher)
     {
         $this->rideGenerator = $rideGenerator;
         $this->cycleFetcher = $cycleFetcher;
+        $this->ridePusher = $ridePusher;
 
         parent::__construct($name);
     }
@@ -114,42 +117,17 @@ class GenerateRidesCommand extends Command
                 $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $ride->getLocation()
             ];
         }, $rideList));
-die;
-        $table = new Table($output);
-        $table->setHeaders(['City', 'DateTime Location', 'DateTime UTC', 'Location', 'Title', 'Cycle Id']);
 
-        $utc = new \DateTimeZone('UTC');
+        $successCounter = $this->ridePusher->pushRides($rideList);
 
-        $counter = 0;
-
-        /** @var Ride $ride */
-        foreach ($this->rideGenerator->getRideList() as $ride) {
-            $table->addRow([
-                $ride->getCity()->getCity(),
-                $ride->getDateTime()->format('Y-m-d H:i'),
-                $ride->getDateTime()->setTimezone($utc)->format('Y-m-d H:i'),
-                $ride->getLocation(),
-                $ride->getTitle(),
-                $ride->getCycle()->getId(),
-            ]);
-
-            $manager->persist($ride);
-
-            ++$counter;
+        if (0 < $successCounter) {
+            $io->success(sprintf('Pushed %d rides to critical mass api', $successCounter));
         }
 
-        $table->render();
-
-        $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('Save all created rides?', false);
-
-        if (!$helper->ask($input, $output, $question)) {
-            return;
+        if ($successCounter < count($rideList)) {
+            $io->error(sprintf('Failed to push %d rides to api', count($rideList) - $successCounter));
         }
 
-        $manager->flush();
-
-        $output->writeln(sprintf('Saved %d rides', $counter));
+        return Command::SUCCESS;
     }
-
 }
