@@ -2,11 +2,15 @@
 
 namespace App\RidePusher;
 
+use App\Model\Api\ApiResultInterface;
+use App\Model\Api\ErrorResult;
+use App\Model\Api\SuccessResult;
 use App\Model\Ride;
 use Doctrine\Common\Annotations\AnnotationReader;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class RidePusher implements RidePusherInterface
 {
@@ -25,7 +29,7 @@ class RidePusher implements RidePusherInterface
         AnnotationReader::addGlobalIgnoredName('alias');
     }
 
-    public function pushRide(Ride $ride): bool
+    public function pushRide(Ride $ride): ApiResultInterface
     {
         if ($ride->getSlug()) {
             $rideIdentifier = $ride->getSlug();
@@ -38,28 +42,33 @@ class RidePusher implements RidePusherInterface
         $apiUrl = sprintf('/api/%s/%s', $citySlug, $rideIdentifier);
 
         try {
-            $response = $this->client->put($apiUrl, [
+            /** @var ResponseInterface $response */
+             $this->client->put($apiUrl, [
                 'body' => $this->serializer->serialize($ride, 'json'),
             ]);
-        } catch (\Exception $e) {
-            return false;
+        } catch (BadResponseException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+
+            $errorResult = $this->serializer->deserialize($responseBody, ErrorResult::class, 'json');
+
+            $errorResult->setRide($ride);
+
+            return $errorResult;
         }
 
-        return Response::HTTP_CREATED === $response->getStatusCode();
+        return new SuccessResult($ride);
     }
 
-    public function pushRides(array $rideList): int
+    public function pushRides(array $rideList): array
     {
-        $successCounter = 0;
+        $resultList = [];
 
-        foreach ($rideList as $ride) {
-            $success = $this->pushRide($ride);
+        foreach ($rideList as $key => $ride) {
+            $result = $this->pushRide($ride);
 
-            if ($success) {
-                ++$successCounter;
-            }
+            $resultList[$key] = $result;
         }
 
-        return $successCounter;
+        return $resultList;
     }
 }

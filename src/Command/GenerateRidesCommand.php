@@ -3,20 +3,19 @@
 namespace App\Command;
 
 use App\CycleFetcher\CycleFetcherInterface;
+use App\Model\Api\ApiResultInterface;
+use App\Model\Api\ErrorResult;
 use App\Model\CityCycle;
 use App\Model\Ride;
-use App\RideGenerator\CityRideGeneratorInterface;
 use App\RideGenerator\CycleRideGeneratorInterface;
 use App\RideGenerator\RideGeneratorInterface;
 use App\RidePusher\RidePusherInterface;
 use Carbon\Carbon;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateRidesCommand extends Command
@@ -118,15 +117,32 @@ class GenerateRidesCommand extends Command
             ];
         }, $rideList));
 
-        $successCounter = $this->ridePusher->pushRides($rideList);
+        $resultList = $this->ridePusher->pushRides($rideList);
 
-        if (0 < $successCounter) {
-            $io->success(sprintf('Pushed %d rides to critical mass api', $successCounter));
-        }
+        $io->success(sprintf('Got %d results for %d rides', count($resultList), count($rideList)));
 
-        if ($successCounter < count($rideList)) {
-            $io->error(sprintf('Failed to push %d rides to api', count($rideList) - $successCounter));
-        }
+        $io->table([
+            'City', 'Date Time', 'Location', 'Http status code', 'Result',
+        ], array_map(function (ApiResultInterface $result): array
+        {
+            $ride = $result->getRide();
+
+            $tableRow = [
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $ride->getLocation()
+            ];
+
+            if ($result instanceof ErrorResult) {
+                $tableRow += [
+                    3 => $result->getHttpStatusCode(),
+                    4 => implode(',', $result->getErrorMessageList())
+                ];
+            }
+
+            dump($tableRow);
+
+            return $tableRow;
+        }, $resultList));
+
 
         return Command::SUCCESS;
     }
