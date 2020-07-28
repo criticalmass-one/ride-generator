@@ -110,11 +110,17 @@ class GenerateRidesCommand extends Command
         $io->success(sprintf('Generated %d rides', count($rideList)));
 
         $io->table([
-            'City', 'Date Time', 'Location',
+            'City', 'Date Time', 'Location', 'Title',
         ], array_map(function (Ride $ride): array
         {
+            if ($ride->getLocation()) {
+                $location = sprintf('%s (%f, %f)', $ride->getLocation(), $ride->getLatitude(), $ride->getLongitude());
+            } else {
+                $location = null;
+            }
+
             return [
-                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $ride->getLocation()
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(),
             ];
         }, $rideList));
 
@@ -123,13 +129,19 @@ class GenerateRidesCommand extends Command
         $io->success(sprintf('Got %d results for %d rides', count($resultList), count($rideList)));
 
         $io->table([
-            'City', 'Date Time', 'Location', 'Http status code', 'Result',
+            'City', 'Date Time', 'Location', 'Title', 'Http status code', 'Result',
         ], array_map(function (ApiResultInterface $result): array
         {
             $ride = $result->getRide();
 
+            if ($ride->getLocation()) {
+                $location = sprintf('%s (%f, %f)', $ride->getLocation(), $ride->getLatitude(), $ride->getLongitude());
+            } else {
+                $location = null;
+            }
+
             $tableRow = [
-                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $ride->getLocation()
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(),
             ];
 
             if ($result instanceof ErrorResult) {
@@ -138,8 +150,6 @@ class GenerateRidesCommand extends Command
                     4 => implode(',', $result->getErrorMessageList())
                 ];
             }
-
-            dump($tableRow);
 
             return $tableRow;
         }, $resultList));
