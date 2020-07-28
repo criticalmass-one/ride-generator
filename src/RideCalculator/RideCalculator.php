@@ -2,6 +2,7 @@
 
 namespace App\RideCalculator;
 
+use App\DateTimeValidator\DateTimeValidator;
 use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\GermanCityDateRideNamer;
@@ -24,11 +25,11 @@ class RideCalculator extends AbstractRideCalculator
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
         // yeah, first create ride and then check if it is matching the cycle range
-        //if (!DateTimeValidator::isValidRide($this->cycle, $ride)) {
-        //    return null;
-        //}
+        if (DateTimeValidator::isValidRide($this->cycle, $ride)) {
+            return $ride;
+        }
 
-        return $ride;
+        return null;
     }
 
     protected function createRide(CityCycle $cycle, \DateTime $dateTime): Ride
