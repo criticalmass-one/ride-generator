@@ -67,9 +67,9 @@ class GenerateRidesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $dateTime = $input->getOption('dateTime') ? new \DateTime($input->getOption('dateTime')) : null;
-        $fromDateTime = $input->getOption('from') ? new \DateTime($input->getOption('from')) : null;
-        $untilDateTime = $input->getOption('until') ? new \DateTime($input->getOption('until')) : null;
+        $dateTime = $input->getOption('dateTime') ? new Carbon($input->getOption('dateTime')) : null;
+        $fromDateTime = $input->getOption('from') ? new Carbon($input->getOption('from')) : null;
+        $untilDateTime = $input->getOption('until') ? new Carbon($input->getOption('until')) : null;
 
         $citySlugList = $input->getArgument('cities');
 
@@ -83,6 +83,8 @@ class GenerateRidesCommand extends Command
             } while ($fromDateTime <= $untilDateTime);
         } elseif ($dateTime) {
             $this->rideGenerator->setDateTime($dateTime);
+        } else {
+            $this->rideGenerator->setDateTime(new Carbon());
         }
 
         $cycleList = $this->cycleFetcher->fetchCycles($citySlugList);
@@ -101,7 +103,6 @@ class GenerateRidesCommand extends Command
 
         $rideList = $this
             ->rideGenerator
-            ->setDateTime(new Carbon())
             ->setCycleList($cycleList)
             ->execute()
             ->getRideList();
