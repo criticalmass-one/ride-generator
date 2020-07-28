@@ -3,23 +3,10 @@
 namespace App\RideNamer;
 
 use App\Model\Ride;
-use Doctrine\Persistence\ManagerRegistry;
+use App\RideNamer\CountingRideNamer\AbstractCountingRideNamer;
 
-class CountingEnglishRideNamer implements RideNamerInterface
+class CountingEnglishRideNamer extends AbstractCountingRideNamer
 {
-    /** @var ManagerRegistry $registry */
-    protected $registry;
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
-
-    protected function countRides(Ride $ride): int
-    {
-        return $this->registry->getRepository(Ride::class)->countRidesByCity($ride->getCity());
-    }
-
     public function generateTitle(Ride $ride): string
     {
         $cityTitle = $ride->getCity()->getTitle();
