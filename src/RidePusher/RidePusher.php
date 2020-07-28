@@ -49,7 +49,11 @@ class RidePusher implements RidePusherInterface
         } catch (BadResponseException $e) {
             $responseBody = $e->getResponse()->getBody()->getContents();
 
-            $errorResult = $this->serializer->deserialize($responseBody, ErrorResult::class, 'json');
+            try {
+                $errorResult = $this->serializer->deserialize($responseBody, ErrorResult::class, 'json');
+            } catch (\Exception $exception) {
+                $errorResult = new ErrorResult(500, [$exception->getMessage()]);
+            }
 
             $errorResult->setRide($ride);
 

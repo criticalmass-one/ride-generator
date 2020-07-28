@@ -17,6 +17,13 @@ class ErrorResult extends AbstractApiResult
      */
     protected array $errorMessageList;
 
+    public function __construct(int $httpStatusCode, array $errorMessageList)
+    {
+        $this->httpStatusCode = $httpStatusCode;
+        $this->errorMessageList = $errorMessageList;
+
+    }
+
     public function getHttpStatusCode(): int
     {
         return $this->httpStatusCode;
