@@ -2,18 +2,22 @@
 
 namespace App\RideCalculator;
 
+use App\DateTimeValidator\DateTimeValidator;
 use App\Model\CityCycle;
 use App\Model\Ride;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+use Carbon\CarbonTimeZone;
 
 class FrankfurtRideCalculator extends RideCalculator
 {
-    public function execute(): Ride
+    public function execute(): ?Ride
     {
         $dateTimeSpec = sprintf('%d-%d-01', $this->year, $this->month);
         $dateTime = new \DateTime($dateTimeSpec);
 
-        $cityTimeZone = new \DateTimeZone($this->cycle->getCity()->getTimezone());
-        $rideDateTime = DateTimeUtil::recreateAsTimeZone($dateTime, $cityTimeZone);
+        $cityTimeZone = new CarbonTimeZone($this->cycle->getCity()->getTimezone());
+        $rideDateTime = new Carbon($dateTimeSpec, $cityTimeZone);
 
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
@@ -27,8 +31,8 @@ class FrankfurtRideCalculator extends RideCalculator
 
     protected function calculateDate(CityCycle $cityCycle, Ride $ride, \DateTime $startDateTime): Ride
     {
-        $dayInterval = new \DateInterval('P1D');
-        $sundayToFridayInterval = new \DateInterval('P5D');
+        $dayInterval = new CarbonInterval('P1D');
+        $sundayToFridayInterval = new CarbonInterval('P5D');
 
         $dateTime = clone $startDateTime;
 
