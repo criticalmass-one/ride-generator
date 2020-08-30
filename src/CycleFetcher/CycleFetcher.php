@@ -14,6 +14,7 @@ class CycleFetcher implements CycleFetcherInterface
     {
         $this->client = new Client([
             'base_uri' => $criticalmassHostname,
+            'verify' => false,
         ]);
 
         $this->serializer = $serializer;
