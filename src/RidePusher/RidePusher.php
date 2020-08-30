@@ -2,6 +2,7 @@
 
 namespace App\RidePusher;
 
+use App\Logger\Logger;
 use App\Model\Api\ApiResultInterface;
 use App\Model\Api\ErrorResult;
 use App\Model\Api\SuccessResult;
@@ -68,11 +69,17 @@ class RidePusher implements RidePusherInterface
     {
         $resultList = [];
 
+        Logger::initProgressBar(count($rideList));
+
         foreach ($rideList as $key => $ride) {
             $result = $this->pushRide($ride);
 
+            Logger::advanceProgressBar();
+
             $resultList[$key] = $result;
         }
+
+        Logger::finishProgressBar();
 
         return $resultList;
     }

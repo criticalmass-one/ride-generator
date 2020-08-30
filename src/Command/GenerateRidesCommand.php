@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\CycleFetcher\CycleFetcherInterface;
+use App\Logger\Logger;
 use App\Model\Api\ApiResultInterface;
 use App\Model\Api\ErrorResult;
 use App\Model\CityCycle;
@@ -66,6 +67,7 @@ class GenerateRidesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
+        Logger::setIo($io);
 
         $dateTime = $input->getOption('dateTime') ? new Carbon($input->getOption('dateTime')) : null;
         $fromDateTime = $input->getOption('from') ? new Carbon($input->getOption('from')) : null;
@@ -101,6 +103,10 @@ class GenerateRidesCommand extends Command
             ];
         }, $cycleList));
 
+        if (!$io->ask(sprintf('Should I proceed and generate rides for these %d cycles?', count($cycleList)))) {
+            return Command::SUCCESS;
+        }
+
         $rideList = $this
             ->rideGenerator
             ->setCycleList($cycleList)
@@ -123,6 +129,10 @@ class GenerateRidesCommand extends Command
                 $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(),
             ];
         }, $rideList));
+
+        if (!$io->ask(sprintf('Should I proceed and push these %d rides to critical mass?', count($rideList)))) {
+            return Command::SUCCESS;
+        }
 
         $resultList = $this->ridePusher->pushRides($rideList);
 
