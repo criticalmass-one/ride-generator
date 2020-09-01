@@ -103,7 +103,7 @@ class GenerateRidesCommand extends Command
             ];
         }, $cycleList));
 
-        if (!$io->ask(sprintf('Should I proceed and generate rides for these %d cycles?', count($cycleList)))) {
+        if ('y' !== $io->ask(sprintf('Should I proceed and generate rides for these %d cycles? [Y/n]', count($cycleList)), 'n')) {
             return Command::SUCCESS;
         }
 
@@ -130,7 +130,7 @@ class GenerateRidesCommand extends Command
             ];
         }, $rideList));
 
-        if (!$io->ask(sprintf('Should I proceed and push these %d rides to critical mass?', count($rideList)))) {
+        if ('y' !== $io->ask(sprintf('Should I proceed and push these %d rides to critical mass? [Y/n]', count($rideList)), 'n')) {
             return Command::SUCCESS;
         }
 
