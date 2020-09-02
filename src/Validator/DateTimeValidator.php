@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\DateTimeValidator;
+namespace App\Validator;
 
 use App\Model\CityCycle;
 use App\Model\Ride;
