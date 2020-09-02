@@ -94,12 +94,15 @@ class GenerateRidesCommand extends Command
         $io->success(sprintf('Fetched %d cycles', count($cycleList)));
 
         $io->table([
-            'City', 'Day of week', 'Week of month'
+            'City', 'Day of week', 'Week of month', 'Ride Calculator'
         ],
         array_map(function (CityCycle $cityCycle): array
         {
+            $rideCalculatorParts = explode('\\', $cityCycle->getRideCalculatorFqcn() ?? 'Standard');
+            $rideCalculator = array_pop($rideCalculatorParts);
+
             return [
-                $cityCycle->getCity()->getName(), $cityCycle->getDayOfWeek(), $cityCycle->getWeekOfMonth(),
+                $cityCycle->getCity()->getName(), $cityCycle->getDayOfWeek(), $cityCycle->getWeekOfMonth(), $rideCalculator,
             ];
         }, $cycleList));
 
@@ -116,7 +119,7 @@ class GenerateRidesCommand extends Command
         $io->success(sprintf('Generated %d rides', count($rideList)));
 
         $io->table([
-            'City', 'Date Time', 'Location', 'Title',
+            'City', 'Date Time', 'Location', 'Title', 'Ride Calculator',
         ], array_map(function (Ride $ride): array
         {
             if ($ride->getLocation()) {
@@ -125,8 +128,11 @@ class GenerateRidesCommand extends Command
                 $location = null;
             }
 
+            $rideCalculatorParts = explode('\\', $ride->getCycle()->getRideCalculatorFqcn() ?? 'Standard');
+            $rideCalculator = array_pop($rideCalculatorParts);
+
             return [
-                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(),
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(), $rideCalculator,
             ];
         }, $rideList));
 
