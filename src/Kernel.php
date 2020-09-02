@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\DependencyInjection\Compiler\RideCalculatorPass;
 use App\DependencyInjection\Compiler\RideNamerPass;
+use App\RideCalculator\RideCalculatorInterface;
 use App\RideNamer\RideNamerInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,5 +45,8 @@ class Kernel extends BaseKernel
     {
         $container->addCompilerPass(new RideNamerPass());
         $container->registerForAutoconfiguration(RideNamerInterface::class)->addTag('ride_namer');
+
+        $container->addCompilerPass(new RideCalculatorPass());
+        $container->registerForAutoconfiguration(RideCalculatorInterface::class)->addTag('ride_calculator');
     }
 }

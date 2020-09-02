@@ -5,6 +5,7 @@ namespace App\RideGenerator;
 use App\Model\CityCycle;
 use App\RideCalculator\RideCalculator;
 use App\RideCalculator\RideCalculatorInterface;
+use App\RideCalculator\RideCalculatorManagerInterface;
 use App\RideNamer\RideNamerListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -18,9 +19,12 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
 
     protected ValidatorInterface $validator;
 
-    public function __construct(RideNamerListInterface $rideNamerList, ValidatorInterface $validator)
+    protected RideCalculatorManagerInterface $rideCalculatorManager;
+
+    public function __construct(RideNamerListInterface $rideNamerList, ValidatorInterface $validator, RideCalculatorManagerInterface $rideCalculatorManager)
     {
         $this->rideNamerList = $rideNamerList;
+        $this->rideCalculatorManager = $rideCalculatorManager;
         $this->validator = $validator;
     }
 
@@ -62,6 +66,7 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
 
     protected function getRideCalculatorForCycle(CityCycle $cityCycle): RideCalculatorInterface
     {
+        /** TODO */
         if (($rideCalculatorFqcn = $cityCycle->getRideCalculatorFqcn()) && class_exists($rideCalculatorFqcn)) {
             return new $rideCalculatorFqcn($this->rideNamerList);
         }
