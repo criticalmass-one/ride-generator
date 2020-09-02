@@ -2,23 +2,20 @@
 
 namespace App\Validator;
 
-use App\Model\CityCycle;
 use App\Model\Ride;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
-class DateTimeValidator
+class RideDateTimeValidator extends ConstraintValidator
 {
-    private function __construct()
+    /**
+     * @param Ride $value
+     */
+    public function validate($value, Constraint $constraint): bool
     {
+        $cityCycle = $value->getCycle();
+        $dateTime = $value->getDateTime();
 
-    }
-
-    public static function isValidRide(CityCycle $cityCycle, Ride $ride): bool
-    {
-        return self::isValidDateTime($cityCycle, $ride->getDateTime());
-    }
-
-    public static function isValidDateTime(CityCycle $cityCycle, \DateTime $dateTime): bool
-    {
         return ($cityCycle->getValidFrom() <= $dateTime && $cityCycle->getValidUntil() >= $dateTime) ||
             ($cityCycle->getValidFrom() <= $dateTime && $cityCycle->getValidUntil() === null) ||
             ($cityCycle->getValidFrom() === null && $cityCycle->getValidUntil() >= $dateTime);
