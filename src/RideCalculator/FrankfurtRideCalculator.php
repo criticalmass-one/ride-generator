@@ -14,7 +14,7 @@ class FrankfurtRideCalculator extends RideCalculator
     public function execute(): ?Ride
     {
         $dateTimeSpec = sprintf('%d-%d-01', $this->year, $this->month);
-        $dateTime = new \DateTime($dateTimeSpec);
+        $dateTime = new Carbon($dateTimeSpec);
 
         $cityTimeZone = new CarbonTimeZone($this->cycle->getCity()->getTimezone());
         $rideDateTime = new Carbon($dateTimeSpec, $cityTimeZone);
@@ -29,7 +29,7 @@ class FrankfurtRideCalculator extends RideCalculator
         return null;
     }
 
-    protected function calculateDate(CityCycle $cityCycle, Ride $ride, \DateTime $startDateTime): Ride
+    protected function calculateDate(CityCycle $cityCycle, Ride $ride, Carbon $startDateTime): Ride
     {
         $dayInterval = new CarbonInterval('P1D');
         $sundayToFridayInterval = new CarbonInterval('P5D');

@@ -65,9 +65,9 @@ class Ride
 
     /**
      * @JMS\Expose()
-     * @JMS\Type("Carbon<'U'>")
+     * @JMS\Type("Carbon")
      */
-    protected \DateTime $createdAt;
+    protected Carbon $createdAt;
 
     public function __construct()
     {
@@ -96,14 +96,14 @@ class Ride
         return $this;
     }
 
-    public function setDateTime(\DateTime $dateTime = null): self
+    public function setDateTime(Carbon $dateTime = null): self
     {
         $this->dateTime = $dateTime;
 
         return $this;
     }
 
-    public function getDateTime(): ?\DateTime
+    public function getDateTime(): ?Carbon
     {
         return $this->dateTime;
     }
@@ -197,12 +197,12 @@ class Ride
         return $this->description;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(Carbon $createdAt): self
     {
         $this->createdAt = $createdAt;
 

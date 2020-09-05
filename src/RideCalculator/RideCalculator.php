@@ -33,7 +33,7 @@ class RideCalculator extends AbstractRideCalculator
         return null;
     }
 
-    protected function createRide(CityCycle $cycle, \DateTime $dateTime): Ride
+    protected function createRide(CityCycle $cycle, Carbon $dateTime): Ride
     {
         $ride = new Ride();
         $ride
@@ -48,7 +48,7 @@ class RideCalculator extends AbstractRideCalculator
         return $ride;
     }
 
-    protected function calculateDate(CityCycle $cityCycle, Ride $ride, \DateTime $startDateTime): Ride
+    protected function calculateDate(CityCycle $cityCycle, Ride $ride, Carbon $startDateTime): Ride
     {
         $dayInterval = new \DateInterval('P1D');
         $weekInterval = new \DateInterval('P7D');

@@ -2,13 +2,15 @@
 
 namespace App\RideGenerator;
 
+use Carbon\Carbon;
+
 interface RideGeneratorInterface
 {
     public function setDateTimeList(array $dateTimeList): RideGeneratorInterface;
 
-    public function setDateTime(\DateTime $dateTime): RideGeneratorInterface;
+    public function setDateTime(Carbon $dateTime): RideGeneratorInterface;
 
-    public function addDateTime(\DateTime $dateTime): RideGeneratorInterface;
+    public function addDateTime(Carbon $dateTime): RideGeneratorInterface;
 
     public function getRideList(): array;
 

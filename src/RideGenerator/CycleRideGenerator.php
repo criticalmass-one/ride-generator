@@ -24,7 +24,7 @@ class CycleRideGenerator extends AbstractRideGenerator implements CycleRideGener
         return $this;
     }
 
-    protected function processCycles(\DateTime $startDateTime): array
+    protected function processCycles(Carbon $startDateTime): array
     {
         $cycles = $this->removeCreatedCycles($startDateTime);
 
@@ -45,7 +45,7 @@ class CycleRideGenerator extends AbstractRideGenerator implements CycleRideGener
         return $rideList;
     }
 
-    protected function removeCreatedCycles(\DateTime $startDateTime): array
+    protected function removeCreatedCycles(Carbon $startDateTime): array
     {
         foreach ($this->cycleList as $key => $cycle) {
             if ($this->hasRideAlreadyBeenCreated($cycle, $startDateTime)) {
