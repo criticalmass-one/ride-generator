@@ -5,6 +5,7 @@ namespace App\RideCalculator;
 use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\RideNamerListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractRideCalculator implements RideCalculatorInterface
 {
@@ -18,9 +19,12 @@ abstract class AbstractRideCalculator implements RideCalculatorInterface
 
     protected ?\DateTimeZone $timezone = null;
 
-    public function __construct(RideNamerListInterface $rideNamerList)
+    protected ValidatorInterface $validator;
+
+    public function __construct(RideNamerListInterface $rideNamerList, ValidatorInterface $validator)
     {
         $this->rideNamerList = $rideNamerList;
+        $this->validator = $validator;
     }
 
     public function setTimezone(\DateTimeZone $timezone): RideCalculatorInterface

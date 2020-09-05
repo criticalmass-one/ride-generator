@@ -4,8 +4,10 @@ namespace App\Model;
 
 use Carbon\Carbon;
 use JMS\Serializer\Annotation as JMS;
+use App\Validator\Constraint\RideDateTime;
 
 /**
+ * @RideDateTime
  * @JMS\ExclusionPolicy("all")
  */
 class Ride

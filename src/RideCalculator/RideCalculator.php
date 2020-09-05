@@ -2,10 +2,10 @@
 
 namespace App\RideCalculator;
 
-use App\DateTimeValidator\DateTimeValidator;
 use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\GermanCityDateRideNamer;
+use App\Validator\RideDateTimeValidator;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 
@@ -24,8 +24,9 @@ class RideCalculator extends AbstractRideCalculator
 
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
-        // yeah, first create ride and then check if it is matching the cycle range
-        if (DateTimeValidator::isValidRide($this->cycle, $ride)) {
+        $constraintValidatonList = $this->validator->validate($ride);
+
+        if (0 === count($constraintValidatonList)) {
             return $ride;
         }
 
