@@ -17,17 +17,17 @@ class ApiController extends AbstractController
      * @Route("/api/preview", name="api_preview", methods={"POST"})
      * @SWG\Response(
      *     response=200,
-     *     description="Returns the rewards of an user",
+     *     description="Returns a preview of the rides to be created by the provided CycleExecuteable.",
      *     @SWG\Schema(
-     *         type="object",
-     *         @SWG\Items(ref=@Model(type=CycleExecuteable::class, groups={"full"}))
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=App\Model\Ride::class, groups={"full"}))
      *     )
      * )
      * @SWG\Parameter(
      *     name="body",
      *     in="body",
      *     type="string",
-     *     description="The field used to order rewards",
+     *     description="The CycleExecuteable to create rides.",
      *     @SWG\Schema(
      *         type="object",
      *         @SWG\Items(ref=@Model(type=CycleExecuteable::class, groups={"full"}))
