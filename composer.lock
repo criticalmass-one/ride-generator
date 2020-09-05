@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a545952dbdaba9a64c919f8fae4d11fd",
+    "content-hash": "4921dd4e0c4f69bb847112cde92b8eb6",
     "packages": [
         {
             "name": "autumndev/jms-serializer-carbon",
@@ -648,16 +648,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.36.1",
+            "version": "2.39.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ee7378a36cc62952100e718bcc58be4c7210e55f"
+                "reference": "7af467873250583cc967a59ee9df29fabab193c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ee7378a36cc62952100e718bcc58be4c7210e55f",
-                "reference": "ee7378a36cc62952100e718bcc58be4c7210e55f",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7af467873250583cc967a59ee9df29fabab193c1",
+                "reference": "7af467873250583cc967a59ee9df29fabab193c1",
                 "shasum": ""
             },
             "require": {
@@ -670,9 +670,9 @@
                 "doctrine/orm": "^2.7",
                 "friendsofphp/php-cs-fixer": "^2.14 || ^3.0",
                 "kylekatarnls/multi-tester": "^2.0",
-                "phpmd/phpmd": "^2.8",
+                "phpmd/phpmd": "^2.9",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12.30",
+                "phpstan/phpstan": "^0.12.35",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
@@ -723,7 +723,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2020-07-04T12:29:56+00:00"
+            "time": "2020-09-04T13:11:37+00:00"
         },
         {
             "name": "psr/cache",
