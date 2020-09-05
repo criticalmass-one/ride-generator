@@ -8,7 +8,6 @@ use App\Validator\Constraint\ExecutorDateTime;
 use Carbon\Carbon;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
 /**
@@ -16,8 +15,19 @@ use Swagger\Annotations as SWG;
  */
 class CycleExecutable
 {
+    /**
+     * @JMS\Expose()
+     */
+    protected ?string $citySlug = null;
+
+    /**
+     * @JMS\Expose()
+     */
     protected ?City $city = null;
 
+    /**
+     * @JMS\Expose()
+     */
     protected ?CityCycle $cityCycle = null;
 
     /**
@@ -64,6 +74,18 @@ class CycleExecutable
         $this->untilDate = $untilDate;
 
         return $this;
+    }
+
+    public function setCitySlug(?string $citySlug): self
+    {
+        $this->citySlug = $citySlug;
+
+        return $this;
+    }
+
+    public function getCitySlug(): ?string
+    {
+        return $this->citySlug;
     }
 
     public function getCity(): ?City
