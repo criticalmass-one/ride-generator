@@ -8,6 +8,7 @@
         "autumndev/jms-serializer-carbon": "^1.2",
         "guzzlehttp/guzzle": "^7.0",
         "jms/serializer-bundle": "^3.7",
+        "nelmio/api-doc-bundle": "^3.7",
         "nesbot/carbon": "^2.39",
         "symfony/console": "5.1.*",
         "symfony/dependency-injection": "5.1.*",
