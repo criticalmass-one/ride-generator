@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Carbon\Carbon;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -45,8 +46,9 @@ class CityCycle
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $time = null;
+    protected ?Carbon $time = null;
 
     /**
      * @JMS\Expose()
@@ -65,28 +67,33 @@ class CityCycle
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $createdAt = null;
+    protected ?Carbon $createdAt = null;
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $updatedAt = null;
+    protected ?Carbon $updatedAt = null;
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $disabledAt = null;
+    protected ?Carbon $disabledAt = null;
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $validFrom = null;
+    protected ?Carbon $validFrom = null;
 
     /**
      * @JMS\Expose()
+     * @JMS\Type("Carbon")
      */
-    protected ?\DateTime $validUntil = null;
+    protected ?Carbon $validUntil = null;
 
     /**
      * @JMS\Expose()
@@ -110,7 +117,7 @@ class CityCycle
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new Carbon();
     }
 
     public function setId(int $id): self
@@ -185,14 +192,14 @@ class CityCycle
         return $this->weekOfMonth;
     }
 
-    public function setTime(\DateTime $time = null): self
+    public function setTime(Carbon $time = null): self
     {
         $this->time = $time;
 
         return $this;
     }
 
-    public function getTime(): ?\DateTime
+    public function getTime(): ?Carbon
     {
         return $this->time;
     }
@@ -209,62 +216,62 @@ class CityCycle
         return $this->location;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(Carbon $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt = null): self
+    public function setUpdatedAt(Carbon $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?Carbon
     {
         return $this->updatedAt;
     }
 
-    public function setDisabledAt(\DateTime $disabledAt = null): self
+    public function setDisabledAt(Carbon $disabledAt = null): self
     {
         $this->disabledAt = $disabledAt;
 
         return $this;
     }
 
-    public function getDisabledAt(): ?\DateTime
+    public function getDisabledAt(): ?Carbon
     {
         return $this->disabledAt;
     }
 
-    public function setValidFrom(\DateTime $validFrom = null): self
+    public function setValidFrom(Carbon $validFrom = null): self
     {
         $this->validFrom = $validFrom;
 
         return $this;
     }
 
-    public function getValidFrom(): ?\DateTime
+    public function getValidFrom(): ?Carbon
     {
         return $this->validFrom;
     }
 
-    public function setValidUntil(\DateTime $validUntil = null): self
+    public function setValidUntil(Carbon $validUntil = null): self
     {
         $this->validUntil = $validUntil;
 
         return $this;
     }
 
-    public function getValidUntil(): ?\DateTime
+    public function getValidUntil(): ?Carbon
     {
         return $this->validUntil;
     }

@@ -7,6 +7,7 @@ use App\RideCalculator\RideCalculator;
 use App\RideCalculator\RideCalculatorInterface;
 use App\RideCalculator\RideCalculatorManagerInterface;
 use App\RideNamer\RideNamerListInterface;
+use Carbon\Carbon;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractRideGenerator implements RideGeneratorInterface
@@ -28,14 +29,14 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
         $this->validator = $validator;
     }
 
-    public function setDateTime(\DateTime $dateTime): RideGeneratorInterface
+    public function setDateTime(Carbon $dateTime): RideGeneratorInterface
     {
         $this->dateTimeList = [$dateTime];
 
         return $this;
     }
 
-    public function addDateTime(\DateTime $dateTime): RideGeneratorInterface
+    public function addDateTime(Carbon $dateTime): RideGeneratorInterface
     {
         $this->dateTimeList[] = $dateTime;
 
@@ -54,7 +55,7 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
         return $this->rideList;
     }
 
-    protected function hasRideAlreadyBeenCreated(CityCycle $cityCycle, \DateTime $startDateTime): bool
+    protected function hasRideAlreadyBeenCreated(CityCycle $cityCycle, Carbon $startDateTime): bool
     {
         return false;
         //$endDateTime = DateTimeUtil::getMonthEndDateTime($startDateTime);
