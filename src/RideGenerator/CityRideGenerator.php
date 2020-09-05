@@ -41,7 +41,7 @@ class CityRideGenerator extends AbstractRideGenerator implements CityRideGenerat
         return $this;
     }
 
-    protected function findCyclesForCity(City $city, \DateTime $startDateTime): array
+    protected function findCyclesForCity(City $city, Carbon $startDateTime): array
     {
         $endDateTime = DateTimeUtil::getMonthEndDateTime($startDateTime);
 
@@ -52,7 +52,7 @@ class CityRideGenerator extends AbstractRideGenerator implements CityRideGenerat
         );
     }
 
-    protected function processCityCycles(array $cycles, \DateTime $startDateTime): array
+    protected function processCityCycles(array $cycles, Carbon $startDateTime): array
     {
         $cycles = $this->removeCreatedCycles($cycles, $startDateTime);
 
@@ -73,7 +73,7 @@ class CityRideGenerator extends AbstractRideGenerator implements CityRideGenerat
         return $rideList;
     }
 
-    protected function removeCreatedCycles(array $cycles, \DateTime $startDateTime): array
+    protected function removeCreatedCycles(array $cycles, Carbon $startDateTime): array
     {
         foreach ($cycles as $key => $cycle) {
             if ($this->hasRideAlreadyBeenCreated($cycle, $startDateTime)) {
