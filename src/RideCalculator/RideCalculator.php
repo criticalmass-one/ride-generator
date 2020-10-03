@@ -5,7 +5,6 @@ namespace App\RideCalculator;
 use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\GermanCityDateRideNamer;
-use App\Validator\RideDateTimeValidator;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 

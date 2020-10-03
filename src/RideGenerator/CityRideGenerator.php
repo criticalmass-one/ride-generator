@@ -4,6 +4,7 @@ namespace App\RideGenerator;
 
 use App\Model\City;
 use App\Model\CityCycle;
+use Carbon\Carbon;
 
 class CityRideGenerator extends AbstractRideGenerator implements CityRideGeneratorInterface
 {
@@ -27,8 +28,9 @@ class CityRideGenerator extends AbstractRideGenerator implements CityRideGenerat
     public function execute(): RideGeneratorInterface
     {
         foreach ($this->cityList as $city) {
+            /** @var Carbon $dateTime */
             foreach ($this->dateTimeList as $dateTime) {
-                $startDateTime = DateTimeUtil::getMonthStartDateTime($dateTime);
+                $startDateTime = $dateTime->startOfMonth();
 
                 $cycles = $this->findCyclesForCity($city, $startDateTime);
 
@@ -43,7 +45,7 @@ class CityRideGenerator extends AbstractRideGenerator implements CityRideGenerat
 
     protected function findCyclesForCity(City $city, Carbon $startDateTime): array
     {
-        $endDateTime = DateTimeUtil::getMonthEndDateTime($startDateTime);
+        $endDateTime = $startDateTime->endOfMonth();
 
         return $this->doctrine->getRepository(CityCycle::class)->findByCity(
             $city,

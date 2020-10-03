@@ -21,8 +21,9 @@ class FrankfurtRideCalculator extends RideCalculator
 
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
-        // yeah, first create ride and then check if it is matching the cycle range
-        if ($ride && DateTimeValidator::isValidRide($this->cycle, $ride)) {
+        $constraintValidatonList = $this->validator->validate($ride);
+
+        if (0 === count($constraintValidatonList)) {
             return $ride;
         }
 
