@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CityRideGeneratorTest extends TestCase
@@ -179,9 +180,9 @@ class CityRideGeneratorTest extends TestCase
         $rideNamerList = new RideNamerList();
         $rideNamerList->addRideNamer(new GermanCityDateRideNamer());
 
-        $validator = $this->createMock(ValidatorInterface::class);
-
-        $validator->method('validate')->willReturn(new ConstraintViolationList());
+        $validator = Validation::createValidatorBuilder()->getValidator();
+        //$validator = $this->createMock(ValidatorInterface::class);
+        //$validator->method('validate')->willReturn(new ConstraintViolationList());
 
         return new CityRideGenerator($rideNamerList, $validator, new RideCalculatorManager());
     }
