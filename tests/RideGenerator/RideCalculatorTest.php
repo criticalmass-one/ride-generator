@@ -48,7 +48,7 @@ class RideCalculatorTest extends TestCase
             ->setCycle($this->createHamburgCycle())
             ->execute();
 
-        $this->assertEquals(new \DateTimeZone('Europe/Berlin'), $ride->getDateTime()->getTimezone());
+        $this->assertEquals(new CarbonTimeZone('Europe/Berlin'), $ride->getDateTime()->getTimezone());
     }
 
     public function testLondon(): void
@@ -59,11 +59,11 @@ class RideCalculatorTest extends TestCase
             ->setCycle($this->createLondonCycle())
             ->execute();
 
-        $europeLondon = new \DateTimeZone('Europe/London');
-        $europeBerlin = new \DateTimeZone('Europe/Berlin');
+        $europeLondon = new CarbonTimeZone('Europe/London');
+        $europeBerlin = new CarbonTimeZone('Europe/Berlin');
 
         $this->assertEquals($europeLondon, $ride->getDateTime()->getTimezone());
-        $this->assertEquals((new \DateTime('2018-09-28 18:00:00', $europeLondon))->format('Y-m-d H:i:s'), $ride->getDateTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals((new Carbon('2018-09-28 18:00:00', $europeLondon))->format('Y-m-d H:i:s'), $ride->getDateTime()->format('Y-m-d H:i:s'));
     }
 
     public function testTime(): void
