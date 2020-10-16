@@ -2,12 +2,12 @@
 
 namespace Tests\RideGenerator;
 
-use App\Criticalmass\RideGenerator\RideCalculator\FrankfurtRideCalculator;
-use App\Criticalmass\RideGenerator\RideCalculator\RideCalculatorInterface;
-use App\Criticalmass\RideNamer\GermanCityDateRideNamer;
-use App\Criticalmass\RideNamer\RideNamerList;
-use App\Entity\City;
-use App\Entity\CityCycle;
+use App\RideCalculator\FrankfurtRideCalculator;
+use App\RideCalculator\RideCalculatorInterface;
+use App\RideNamer\GermanCityDateRideNamer;
+use App\RideNamer\RideNamerList;
+use App\Model\City;
+use App\Model\CityCycle;
 use PHPUnit\Framework\TestCase;
 
 class FrankfurtRideCalculatorTest extends TestCase
