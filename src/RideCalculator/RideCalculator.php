@@ -52,7 +52,7 @@ class RideCalculator extends AbstractRideCalculator
         $dayInterval = new \DateInterval('P1D');
         $weekInterval = new \DateInterval('P7D');
 
-        $dateTime = clone $startDateTime;
+        $dateTime = new Carbon($startDateTime->format('Y-m-d 00:00:00'), new CarbonTimeZone($cityCycle->getCity()->getTimezone()));
 
         while ($dateTime->format('w') != $cityCycle->getDayOfWeek()) {
             $dateTime->add($dayInterval);
