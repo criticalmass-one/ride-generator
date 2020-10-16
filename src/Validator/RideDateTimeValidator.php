@@ -11,13 +11,17 @@ class RideDateTimeValidator extends ConstraintValidator
     /**
      * @param Ride $value
      */
-    public function validate($value, Constraint $constraint): bool
+    public function validate($value, Constraint $constraint): void
     {
         $cityCycle = $value->getCycle();
         $dateTime = $value->getDateTime();
 
-        return ($cityCycle->getValidFrom() <= $dateTime && $cityCycle->getValidUntil() >= $dateTime) ||
+        $result = ($cityCycle->getValidFrom() <= $dateTime && $cityCycle->getValidUntil() >= $dateTime) ||
             ($cityCycle->getValidFrom() <= $dateTime && $cityCycle->getValidUntil() === null) ||
             ($cityCycle->getValidFrom() === null && $cityCycle->getValidUntil() >= $dateTime);
+
+        if (!$result) {
+            $this->context->buildViolation($constraint->message)->addViolation();
+        }
     }
 }

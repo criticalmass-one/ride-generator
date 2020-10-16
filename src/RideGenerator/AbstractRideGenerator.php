@@ -69,7 +69,7 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
     {
         /** TODO */
         if (($rideCalculatorFqcn = $cityCycle->getRideCalculatorFqcn()) && class_exists($rideCalculatorFqcn)) {
-            return new $rideCalculatorFqcn($this->rideNamerList);
+            return new $rideCalculatorFqcn($this->rideNamerList, $this->validator);
         }
 
         return new RideCalculator($this->rideNamerList, $this->validator);

@@ -21,8 +21,9 @@ class FrankfurtRideCalculator extends RideCalculator
 
         $ride = $this->createRide($this->cycle, $rideDateTime);
 
-        // yeah, first create ride and then check if it is matching the cycle range
-        if ($ride && DateTimeValidator::isValidRide($this->cycle, $ride)) {
+        $constraintValidatonList = $this->validator->validate($ride);
+
+        if (0 === count($constraintValidatonList)) {
             return $ride;
         }
 
@@ -34,7 +35,7 @@ class FrankfurtRideCalculator extends RideCalculator
         $dayInterval = new CarbonInterval('P1D');
         $sundayToFridayInterval = new CarbonInterval('P5D');
 
-        $dateTime = clone $startDateTime;
+        $dateTime = new Carbon($startDateTime->format('Y-m-d 00:00:00'), new CarbonTimeZone($cityCycle->getCity()->getTimezone()));
 
         // first we look for the first sunday of the month
         while ($dateTime->format('w') != CityCycle::DAY_SUNDAY) {
