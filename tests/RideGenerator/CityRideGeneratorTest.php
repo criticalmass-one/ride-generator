@@ -180,7 +180,7 @@ class CityRideGeneratorTest extends TestCase
         $rideNamerList = new RideNamerList();
         $rideNamerList->addRideNamer(new GermanCityDateRideNamer());
 
-        $validator = Validation::createValidatorBuilder()->getValidator();
+        $validator = Validation::createValidatorBuilder()->enableAnnotationMapping()->getValidator();
         //$validator = $this->createMock(ValidatorInterface::class);
         //$validator->method('validate')->willReturn(new ConstraintViolationList());
 

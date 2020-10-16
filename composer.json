@@ -6,6 +6,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "autumndev/jms-serializer-carbon": "^1.2",
+        "doctrine/annotations": "^1.10",
+        "doctrine/cache": "^1.10",
         "guzzlehttp/guzzle": "^7.0",
         "jms/serializer-bundle": "^3.7",
         "nelmio/api-doc-bundle": "^3.7",

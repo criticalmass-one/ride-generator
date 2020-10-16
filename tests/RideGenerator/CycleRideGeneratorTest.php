@@ -11,13 +11,9 @@ use App\RideNamer\RideNamerList;
 use App\Model\City;
 use App\Model\CityCycle;
 use App\Model\Ride;
-use App\Validator\RideDateTimeValidator;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Validator\TraceableValidator;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CycleRideGeneratorTest extends TestCase
 {
@@ -181,7 +177,7 @@ class CycleRideGeneratorTest extends TestCase
         $rideNamerList = new RideNamerList();
         $rideNamerList->addRideNamer(new GermanCityDateRideNamer());
 
-        $validator = Validation::createValidatorBuilder()->getValidator();
+        $validator = Validation::createValidatorBuilder()->enableAnnotationMapping()->getValidator();
         //$validator = $this->createMock(ValidatorInterface::class);
         //$validator->method('validate')->willReturn(new ConstraintViolationList());
 
