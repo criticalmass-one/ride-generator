@@ -8,7 +8,11 @@ use App\RideNamer\GermanCityDateRideNamer;
 use App\RideNamer\RideNamerList;
 use App\Model\City;
 use App\Model\CityCycle;
+use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RideCalculatorTest extends TestCase
 {
@@ -151,21 +155,21 @@ class RideCalculatorTest extends TestCase
         $rideNamerList = new RideNamerList();
         $rideNamerList->addRideNamer(new GermanCityDateRideNamer());
 
-        return new RideCalculator($rideNamerList);
+        return new RideCalculator($rideNamerList, $this->createValidator());
     }
 
     protected function createLondonCycle(): CityCycle
     {
         $city = new City();
         $city
-            ->setCity('London')
+            ->setName('London')
             ->setTimezone('Europe/London');
 
         $cityCycle = new CityCycle();
         $cityCycle
             ->setWeekOfMonth(CityCycle::WEEK_LAST)
             ->setDayOfWeek(CityCycle::DAY_FRIDAY)
-            ->setTime(new \DateTime('18:00:00'), new \DateTimeZone('Europe/London'))
+            ->setTime(new Carbon('18:00:00', new CarbonTimeZone('Europe/London')))
             ->setLocation('Southbank under Waterloo Bridge')
             ->setLatitude(51.507320112865)
             ->setLongitude(-0.11578559875488)
@@ -178,14 +182,14 @@ class RideCalculatorTest extends TestCase
     {
         $city = new City();
         $city
-            ->setCity('Hamburg')
+            ->setName('Hamburg')
             ->setTimezone('Europe/Berlin');
 
         $cityCycle = new CityCycle();
         $cityCycle
             ->setWeekOfMonth(CityCycle::WEEK_LAST)
             ->setDayOfWeek(CityCycle::DAY_FRIDAY)
-            ->setTime(new \DateTime('19:00:00'))
+            ->setTime(new Carbon('19:00:00'))
             ->setLocation('Stadtpark Hamburg')
             ->setLatitude(53.596812)
             ->setLongitude(10.011008)
@@ -198,19 +202,19 @@ class RideCalculatorTest extends TestCase
     {
         $city = new City();
         $city
-            ->setCity('Halle')
+            ->setName('Halle')
             ->setTimezone('Europe/Berlin');
 
         $cityCycle = new CityCycle();
         $cityCycle
             ->setWeekOfMonth(CityCycle::WEEK_FIRST)
             ->setDayOfWeek(CityCycle::DAY_FRIDAY)
-            ->setTime(new \DateTime('18:00:00'))
+            ->setTime(new Carbon('18:00:00'))
             ->setLocation('August-Bebel-Platz')
             ->setLatitude(51.491664696772)
             ->setLongitude(11.96897149086)
             ->setCity($city)
-            ->setValidFrom(new \DateTime('2018-03-01'));
+            ->setValidFrom(new Carbon('2018-03-01'));
 
         return $cityCycle;
     }
@@ -219,19 +223,19 @@ class RideCalculatorTest extends TestCase
     {
         $city = new City();
         $city
-            ->setCity('Rendsburg')
+            ->setName('Rendsburg')
             ->setTimezone('Europe/Berlin');
 
         $cityCycle = new CityCycle();
         $cityCycle
             ->setWeekOfMonth(CityCycle::WEEK_LAST)
             ->setDayOfWeek(CityCycle::DAY_FRIDAY)
-            ->setTime(new \DateTime('19:00:00'))
+            ->setTime(new Carbon('19:00:00'))
             ->setLocation('Lornsendenkmal')
             ->setLatitude(54.300527)
             ->setLongitude(9.664402)
             ->setCity($city)
-            ->setValidUntil(new \DateTime('2019-12-12'));
+            ->setValidUntil(new Carbon('2019-12-12'));
 
         return $cityCycle;
     }
@@ -240,21 +244,26 @@ class RideCalculatorTest extends TestCase
     {
         $city = new City();
         $city
-            ->setCity('Harburg')
+            ->setName('Harburg')
             ->setTimezone('Europe/Berlin');
 
         $cityCycle = new CityCycle();
         $cityCycle
             ->setWeekOfMonth(CityCycle::WEEK_SECOND)
             ->setDayOfWeek(CityCycle::DAY_FRIDAY)
-            ->setTime(new \DateTime('19:00:00'))
+            ->setTime(new Carbon('19:00:00'))
             ->setLocation('Karstadt')
             ->setLatitude(53.461030)
             ->setLongitude(9.978549)
             ->setCity($city)
-            ->setValidFrom(new \DateTime('2019-01-20'))
-            ->setValidUntil(new \DateTime('2019-12-04'));
+            ->setValidFrom(new Carbon('2019-01-20'))
+            ->setValidUntil(new Carbon('2019-12-04'));
 
         return $cityCycle;
+    }
+
+    protected function createValidator(): ValidatorInterface
+    {
+        return Validation::createValidatorBuilder()->enableAnnotationMapping()->getValidator();
     }
 }
