@@ -35,7 +35,7 @@ class FrankfurtRideCalculator extends RideCalculator
         $dayInterval = new CarbonInterval('P1D');
         $sundayToFridayInterval = new CarbonInterval('P5D');
 
-        $dateTime = clone $startDateTime;
+        $dateTime = new Carbon($startDateTime->format('Y-m-d 00:00:00'), new CarbonTimeZone($cityCycle->getCity()->getTimezone()));
 
         // first we look for the first sunday of the month
         while ($dateTime->format('w') != CityCycle::DAY_SUNDAY) {
