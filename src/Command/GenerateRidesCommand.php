@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Api\RideApiInterface;
 use App\CycleFetcher\CycleFetcherInterface;
 use App\Logger\Logger;
 use App\Model\Api\ApiResultInterface;
@@ -24,12 +25,14 @@ class GenerateRidesCommand extends Command
     protected RideGeneratorInterface $rideGenerator;
     protected CycleFetcherInterface $cycleFetcher;
     protected RidePusherInterface $ridePusher;
+    protected RideApiInterface $rideApi;
 
-    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher)
+    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher, RideApiInterface $rideApi)
     {
         $this->rideGenerator = $rideGenerator;
         $this->cycleFetcher = $cycleFetcher;
         $this->ridePusher = $ridePusher;
+        $this->rideApi = $rideApi;
 
         parent::__construct($name);
     }
@@ -74,19 +77,23 @@ class GenerateRidesCommand extends Command
         $untilDateTime = $input->getOption('until') ? new Carbon($input->getOption('until')) : null;
 
         $citySlugList = $input->getArgument('cities');
+        $existingRideList = [];
 
         if ($fromDateTime && $untilDateTime) {
             $monthInterval = new \DateInterval('P1M');
 
             do {
                 $this->rideGenerator->addDateTime($fromDateTime);
+                $rideList = array_merge($rideList, $this->rideApi->getRideListInMonth($fromDateTime));
 
                 $fromDateTime->add($monthInterval);
             } while ($fromDateTime <= $untilDateTime);
         } elseif ($dateTime) {
             $this->rideGenerator->setDateTime($dateTime);
+            $rideList = $this->rideApi->getRideListInMonth($dateTime);
         } else {
             $this->rideGenerator->setDateTime(new Carbon());
+            $rideList = $this->rideApi->getRideListInMonth(new Carbon());
         }
 
         $cycleList = $this->cycleFetcher->fetchCycles($citySlugList);
