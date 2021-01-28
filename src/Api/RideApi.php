@@ -27,7 +27,7 @@ class RideApi implements RideApiInterface
 
     public function getRideListInMonth(\DateTime $dateTime): array
     {
-        $uri = sprintf('/api/ride?year=%d&month=%d&size=500', $dateTime->format('Y'), $dateTime->format('m'));
+        $uri = sprintf('/api/ride?year=%d&month=%d&size=500&extended=true', $dateTime->format('Y'), $dateTime->format('m'));
 
         $response = $this->client->get($uri);
 

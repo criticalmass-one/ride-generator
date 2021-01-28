@@ -60,6 +60,12 @@ class GenerateRidesCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'DateTime of period to start'
             )
+            ->addOption(
+                'strip-duplicates',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not create duplicates'
+            )
             ->addArgument(
                 'cities',
                 InputArgument::IS_ARRAY,
@@ -84,16 +90,16 @@ class GenerateRidesCommand extends Command
 
             do {
                 $this->rideGenerator->addDateTime($fromDateTime);
-                $rideList = array_merge($rideList, $this->rideApi->getRideListInMonth($fromDateTime));
+                $existingRideList = array_merge($rideList, $this->rideApi->getRideListInMonth($fromDateTime));
 
                 $fromDateTime->add($monthInterval);
             } while ($fromDateTime <= $untilDateTime);
         } elseif ($dateTime) {
             $this->rideGenerator->setDateTime($dateTime);
-            $rideList = $this->rideApi->getRideListInMonth($dateTime);
+            $existingRideList = $this->rideApi->getRideListInMonth($dateTime);
         } else {
             $this->rideGenerator->setDateTime(new Carbon());
-            $rideList = $this->rideApi->getRideListInMonth(new Carbon());
+            $existingRideList = $this->rideApi->getRideListInMonth(new Carbon());
         }
 
         $cycleList = $this->cycleFetcher->fetchCycles($citySlugList);
@@ -124,6 +130,44 @@ class GenerateRidesCommand extends Command
             ->getRideList();
 
         $io->success(sprintf('Generated %d rides', count($rideList)));
+
+        $io->table([
+            'City', 'Date Time', 'Location', 'Title', 'Ride Calculator',
+        ], array_map(function (Ride $ride): array
+        {
+            if ($ride->getLocation()) {
+                $location = sprintf('%s (%f, %f)', $ride->getLocation(), $ride->getLatitude(), $ride->getLongitude());
+            } else {
+                $location = null;
+            }
+
+            $rideCalculatorParts = explode('\\', $ride->getCycle()->getRideCalculatorFqcn() ?? 'Standard');
+            $rideCalculator = array_pop($rideCalculatorParts);
+
+            return [
+                $ride->getCity()->getName(), $ride->getDateTime()->format('Y-m-d H:i:s'), $location, $ride->getTitle(), $rideCalculator,
+            ];
+        }, $rideList));
+
+        if ($input->getOption('strip-duplicates')) {
+            /**
+             * @var Ride $newRide
+             * @var Ride $existingRide
+             */
+            foreach ($rideList as $newRideKey => $newRide) {
+                foreach ($existingRideList as $existingRide) {
+                    if (
+                        $newRide->getDateTime()->format('Y-m-d') === $existingRide->getDateTime()->format('Y-m-d') &&
+                        $newRide->getCity()->getId() === $existingRide->getCity()->getId()
+                    ) {
+                        $io->note(sprintf('Ride %s in City %s is duplicated and removed from list', $newRide->getDateTime()->format('Y-m-d'), $newRide->getCity()->getName()));
+                        unset($rideList[$newRideKey]);
+                    }
+                }
+            }
+        }
+
+        $io->success(sprintf('There are %d rides left', count($rideList)));
 
         $io->table([
             'City', 'Date Time', 'Location', 'Title', 'Ride Calculator',
