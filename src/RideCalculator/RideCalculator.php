@@ -50,7 +50,7 @@ class RideCalculator extends AbstractRideCalculator
 
     protected function calculateDate(CityCycle $cityCycle, Ride $ride, Carbon $startDateTime): Ride
     {
-        $dateTime = new Carbon($startDateTime->format('Y-m-d 00:00:00'), new CarbonTimeZone($cityCycle->getCity()->getTimezone()));
+        $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $startDateTime->format('Y-m-d 00:00:00'), $cityCycle->getCity()->getTimezone());
 
         while ($dateTime->format('w') != $cityCycle->getDayOfWeek()) {
             $dateTime->addDay();
@@ -78,13 +78,16 @@ class RideCalculator extends AbstractRideCalculator
     protected function calculateTime(CityCycle $cityCycle, Ride $ride): Ride
     {
         $time = $cityCycle->getTime();
-        
+
         $dateTime = $ride->getDateTime();
+
+        $timezone = $dateTime->getTimezone();
+        $offset = $timezone->getOffset($dateTime);
+
         $dateTime
-            ->setTimezone(new CarbonTimeZone($cityCycle->getCity()->getTimezone()))
             ->addHours((int) $time->format('H'))
             ->addMinutes((int) $time->format('i'))
-            ->setTimezone(new CarbonTimeZone('UTC'))
+            ->subSeconds($offset)
         ;
 
         $ride->setDateTime($dateTime);
