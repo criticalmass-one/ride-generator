@@ -6,6 +6,7 @@ use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\GermanCityDateRideNamer;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Carbon\CarbonTimeZone;
 
 class RideCalculator extends AbstractRideCalculator
@@ -77,12 +78,15 @@ class RideCalculator extends AbstractRideCalculator
     protected function calculateTime(CityCycle $cityCycle, Ride $ride): Ride
     {
         $time = $cityCycle->getTime();
-
-        $intervalSpec = sprintf('PT%dH%dM', $time->format('H'), $time->format('i'));
-        $timeInterval = new \DateInterval($intervalSpec);
-
+        
         $dateTime = $ride->getDateTime();
-        $dateTime->add($timeInterval);
+        $dateTime
+            ->setTimezone(new CarbonTimeZone($cityCycle->getCity()->getTimezone()))
+            ->addHours((int) $time->format('H'))
+            ->addMinutes((int) $time->format('i'))
+            ->setTimezone(new CarbonTimeZone('UTC'))
+        ;
+
         $ride->setDateTime($dateTime);
 
         return $ride;
