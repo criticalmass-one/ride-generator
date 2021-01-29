@@ -6,6 +6,7 @@ use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideNamer\GermanCityDateRideNamer;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Carbon\CarbonTimeZone;
 
 class RideCalculator extends AbstractRideCalculator
@@ -49,27 +50,24 @@ class RideCalculator extends AbstractRideCalculator
 
     protected function calculateDate(CityCycle $cityCycle, Ride $ride, Carbon $startDateTime): Ride
     {
-        $dayInterval = new \DateInterval('P1D');
-        $weekInterval = new \DateInterval('P7D');
-
         $dateTime = new Carbon($startDateTime->format('Y-m-d 00:00:00'), new CarbonTimeZone($cityCycle->getCity()->getTimezone()));
 
         while ($dateTime->format('w') != $cityCycle->getDayOfWeek()) {
-            $dateTime->add($dayInterval);
+            $dateTime->addDay();
         }
 
         if ($cityCycle->getWeekOfMonth() > 0) {
             $weekOfMonth = $cityCycle->getWeekOfMonth();
 
             for ($i = 1; $i < $weekOfMonth; ++$i) {
-                $dateTime->add($weekInterval);
+                $dateTime->addWeek();
             }
         } else {
-            while ($dateTime->format('m') == $startDateTime->format('m')) {
-                $dateTime->add($weekInterval);
+            while ($dateTime->format('m') === $startDateTime->format('m')) {
+                $dateTime->addWeek();
             }
 
-            $dateTime->sub($weekInterval);
+            $dateTime->subWeek();
         }
 
         $ride->setDateTime($dateTime);
@@ -80,12 +78,15 @@ class RideCalculator extends AbstractRideCalculator
     protected function calculateTime(CityCycle $cityCycle, Ride $ride): Ride
     {
         $time = $cityCycle->getTime();
-
-        $intervalSpec = sprintf('PT%dH%dM', $time->format('H'), $time->format('i'));
-        $timeInterval = new \DateInterval($intervalSpec);
-
+        
         $dateTime = $ride->getDateTime();
-        $dateTime->add($timeInterval);
+        $dateTime
+            ->setTimezone(new CarbonTimeZone($cityCycle->getCity()->getTimezone()))
+            ->addHours((int) $time->format('H'))
+            ->addMinutes((int) $time->format('i'))
+            ->setTimezone(new CarbonTimeZone('UTC'))
+        ;
+
         $ride->setDateTime($dateTime);
 
         return $ride;
