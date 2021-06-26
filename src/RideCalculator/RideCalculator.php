@@ -80,14 +80,9 @@ class RideCalculator extends AbstractRideCalculator
         $time = $cityCycle->getTime();
 
         $dateTime = $ride->getDateTime();
-
-        $timezone = $dateTime->getTimezone();
-        $offset = $timezone->getOffset($dateTime);
-
-        $dateTime
-            ->addHours((int) $time->format('H'))
-            ->addMinutes((int) $time->format('i'))
-            ->subSeconds($offset)
+        $dateTime = $dateTime
+            ->addHours($time->format('H'))
+            ->addMinutes($time->format('i'))
         ;
 
         $ride->setDateTime($dateTime);
