@@ -27,14 +27,14 @@ class GenerateRidesCommand extends Command
     protected RidePusherInterface $ridePusher;
     protected RideApiInterface $rideApi;
 
-    public function __construct($name = null, CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher, RideApiInterface $rideApi)
+    public function __construct(CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher, RideApiInterface $rideApi)
     {
         $this->rideGenerator = $rideGenerator;
         $this->cycleFetcher = $cycleFetcher;
         $this->ridePusher = $ridePusher;
         $this->rideApi = $rideApi;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
