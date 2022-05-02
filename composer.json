@@ -28,10 +28,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "symfony/browser-kit": "^5.1",
-        "symfony/css-selector": "^5.1",
-        "symfony/maker-bundle": "^1.21",
-        "symfony/phpunit-bridge": "^5.1"
+        "symfony/maker-bundle": "^1.21"
     },
     "config": {
         "optimize-autoloader": true,
