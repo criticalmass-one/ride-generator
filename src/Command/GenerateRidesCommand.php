@@ -10,7 +10,6 @@ use App\Model\Api\ErrorResult;
 use App\Model\CityCycle;
 use App\Model\Ride;
 use App\RideGenerator\CycleRideGeneratorInterface;
-use App\RideGenerator\RideGeneratorInterface;
 use App\RidePusher\RidePusherInterface;
 use Carbon\Carbon;
 use Symfony\Component\Console\Command\Command;
@@ -22,18 +21,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateRidesCommand extends Command
 {
-    protected RideGeneratorInterface $rideGenerator;
-    protected CycleFetcherInterface $cycleFetcher;
-    protected RidePusherInterface $ridePusher;
-    protected RideApiInterface $rideApi;
+    protected static $defaultDescription = 'Create rides for a parameterized year and month automatically';
 
-    public function __construct(CycleRideGeneratorInterface $rideGenerator, CycleFetcherInterface $cycleFetcher, RidePusherInterface $ridePusher, RideApiInterface $rideApi)
+    public function __construct(protected CycleRideGeneratorInterface $rideGenerator, protected CycleFetcherInterface $cycleFetcher, protected RidePusherInterface $ridePusher, protected RideApiInterface $rideApi)
     {
-        $this->rideGenerator = $rideGenerator;
-        $this->cycleFetcher = $cycleFetcher;
-        $this->ridePusher = $ridePusher;
-        $this->rideApi = $rideApi;
-
         parent::__construct();
     }
 
@@ -41,7 +32,6 @@ class GenerateRidesCommand extends Command
     {
         $this
             ->setName('criticalmass:cycles:generate-rides')
-            ->setDescription('Create rides for a parameterized year and month automatically')
             ->addOption(
                 'dateTime',
                 null,
@@ -73,8 +63,9 @@ class GenerateRidesCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $rideList = null;
         $io = new SymfonyStyle($input, $output);
         Logger::setIo($io);
 
@@ -118,7 +109,7 @@ class GenerateRidesCommand extends Command
             ->execute()
             ->getRideList();
 
-        $io->success(sprintf('Generated %d rides', count($rideList)));
+        $io->success(sprintf('Generated %d rides', is_countable($rideList) ? count($rideList) : 0));
 
         $this->printRideList($io, $rideList);
 
@@ -126,17 +117,17 @@ class GenerateRidesCommand extends Command
             $rideList = $this->stripDuplicateRides($rideList, $existingRideList, $io);
         }
 
-        $io->success(sprintf('There are %d rides left', count($rideList)));
+        $io->success(sprintf('There are %d rides left', is_countable($rideList) ? count($rideList) : 0));
 
         $this->printRideList($io, $rideList);
 
-        if ('y' !== $io->ask(sprintf('Should I proceed and push these %d rides to critical mass? [Y/n]', count($rideList)), 'n')) {
+        if ('y' !== $io->ask(sprintf('Should I proceed and push these %d rides to critical mass? [Y/n]', is_countable($rideList) ? count($rideList) : 0), 'n')) {
             return Command::SUCCESS;
         }
 
         $resultList = $this->ridePusher->pushRides($rideList);
 
-        $io->success(sprintf('Got %d results for %d rides', count($resultList), count($rideList)));
+        $io->success(sprintf('Got %d results for %d rides', count($resultList), is_countable($rideList) ? count($rideList) : 0));
 
         $this->printResultList($io, $resultList);
 

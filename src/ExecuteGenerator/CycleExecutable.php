@@ -15,35 +15,29 @@ use Swagger\Annotations as SWG;
  */
 class CycleExecutable
 {
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $citySlug = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?City $city = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?CityCycle $cityCycle = null;
 
     /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon<'U'>")
      * @SWG\Property(type="datetime", description="Begin of time span to create rides.")
-     * @Assert\GreaterThanOrEqual("1992-09-01", message="Vor September 1992 können keine Touren angelegt werden — das ist übrigens das Datum der allerersten Critical Mass in San Francisco.")
      */
+    #[JMS\Expose]
+    #[JMS\Type("Carbon<'U'>")]
+    #[Assert\GreaterThanOrEqual('1992-09-01', message: 'Vor September 1992 können keine Touren angelegt werden — das ist übrigens das Datum der allerersten Critical Mass in San Francisco.')]
     protected ?Carbon $fromDate = null;
 
     /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon<'U'>")
      * @SWG\Property(type="datetime", description="End of time span to create rides.")
-     * @Assert\LessThanOrEqual("+1 years", message="Touren können maximal zwölf Monate im Voraus angelegt werden.")
      */
+    #[JMS\Expose]
+    #[JMS\Type("Carbon<'U'>")]
+    #[Assert\LessThanOrEqual('+1 years', message: 'Touren können maximal zwölf Monate im Voraus angelegt werden.')]
     protected ?Carbon $untilDate = null;
 
     public function __construct()

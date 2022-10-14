@@ -7,11 +7,8 @@ use App\RideNamer\RideNamerInterface;
 
 abstract class AbstractCountingRideNamer implements RideNamerInterface
 {
-    protected RideCounterInterface $rideCounter;
-
-    public function __construct(RideCounterInterface $rideCounter)
+    public function __construct(protected RideCounterInterface $rideCounter)
     {
-        $this->rideCounter = $rideCounter;
     }
 
     protected function countRides(Ride $ride): int

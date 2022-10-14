@@ -16,17 +16,8 @@ abstract class AbstractRideGenerator implements RideGeneratorInterface
 
     protected array $rideList = [];
 
-    protected RideNamerListInterface $rideNamerList;
-
-    protected ValidatorInterface $validator;
-
-    protected RideCalculatorManagerInterface $rideCalculatorManager;
-
-    public function __construct(RideNamerListInterface $rideNamerList, ValidatorInterface $validator, RideCalculatorManagerInterface $rideCalculatorManager)
+    public function __construct(protected RideNamerListInterface $rideNamerList, protected ValidatorInterface $validator, protected RideCalculatorManagerInterface $rideCalculatorManager)
     {
-        $this->rideNamerList = $rideNamerList;
-        $this->rideCalculatorManager = $rideCalculatorManager;
-        $this->validator = $validator;
     }
 
     public function setDateTime(Carbon $dateTime): RideGeneratorInterface

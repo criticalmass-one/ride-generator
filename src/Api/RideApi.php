@@ -10,16 +10,13 @@ use JMS\Serializer\SerializerInterface;
 class RideApi implements RideApiInterface
 {
     protected Client $client;
-    protected SerializerInterface $serializer;
 
-    public function __construct(string $criticalmassHostname, SerializerInterface $serializer)
+    public function __construct(string $criticalmassHostname, protected SerializerInterface $serializer)
     {
         $this->client = new Client([
             'base_uri' => $criticalmassHostname,
             'verify' => false,
         ]);
-
-        $this->serializer = $serializer;
 
         // @see https://github.com/symfony/symfony/issues/29161
         AnnotationReader::addGlobalIgnoredName('alias');

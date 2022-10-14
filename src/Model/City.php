@@ -4,40 +4,26 @@ namespace App\Model;
 
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @JMS\ExclusionPolicy("all")
- */
+#[JMS\ExclusionPolicy('all')]
 class City
 {
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $id = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $name = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $title = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("array<App\Model\CitySlug>")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('array<App\Model\CitySlug>')]
     protected array $slugs = [];
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $timezone = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $rideNamer = null;
 
     public function setId(int $id): self

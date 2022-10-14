@@ -15,16 +15,10 @@ abstract class AbstractRideCalculator implements RideCalculatorInterface
 
     protected CityCycle $cycle;
 
-    protected RideNamerListInterface $rideNamerList;
-
     protected ?\DateTimeZone $timezone = null;
 
-    protected ValidatorInterface $validator;
-
-    public function __construct(RideNamerListInterface $rideNamerList, ValidatorInterface $validator)
+    public function __construct(protected RideNamerListInterface $rideNamerList, protected ValidatorInterface $validator)
     {
-        $this->rideNamerList = $rideNamerList;
-        $this->validator = $validator;
     }
 
     public function setTimezone(\DateTimeZone $timezone): RideCalculatorInterface

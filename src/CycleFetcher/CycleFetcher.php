@@ -8,16 +8,13 @@ use JMS\Serializer\SerializerInterface;
 class CycleFetcher implements CycleFetcherInterface
 {
     protected Client $client;
-    protected SerializerInterface $serializer;
 
-    public function __construct(SerializerInterface $serializer, string $criticalmassHostname)
+    public function __construct(protected SerializerInterface $serializer, string $criticalmassHostname)
     {
         $this->client = new Client([
             'base_uri' => $criticalmassHostname,
             'verify' => false,
         ]);
-
-        $this->serializer = $serializer;
     }
 
     public function fetchCycles(array $citySlugList = []): array

@@ -13,7 +13,7 @@ class RideCalculatorManager implements RideCalculatorManagerInterface
 
     public function addRideCalculator(RideCalculatorInterface $rideCalculator): self
     {
-        $this->rideCalculatorList[get_class($rideCalculator)] = $rideCalculator;
+        $this->rideCalculatorList[$rideCalculator::class] = $rideCalculator;
 
         return $this;
     }

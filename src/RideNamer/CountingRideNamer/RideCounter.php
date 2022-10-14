@@ -9,16 +9,13 @@ use JMS\Serializer\SerializerInterface;
 class RideCounter implements RideCounterInterface
 {
     protected Client $client;
-    protected SerializerInterface $serializer;
 
-    public function __construct(SerializerInterface $serializer, string $criticalmassHostname)
+    public function __construct(protected SerializerInterface $serializer, string $criticalmassHostname)
     {
         $this->client = new Client([
             'base_uri' => $criticalmassHostname,
             'verify' => false,
         ]);
-
-        $this->serializer = $serializer;
     }
 
     public function countRides(City $city): int
@@ -29,6 +26,6 @@ class RideCounter implements RideCounterInterface
 
         $rideList = $this->serializer->deserialize($response->getBody()->getContents(), 'array<App\Model\Ride>', 'json');
 
-        return count($rideList);
+        return is_countable($rideList) ? count($rideList) : 0;
     }
 }

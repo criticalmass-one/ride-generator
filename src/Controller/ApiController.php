@@ -17,7 +17,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/preview", name="api_preview", methods={"POST"})
      * @OA\Response(
      *     response=200,
      *     description="Returns a preview of the rides to be created by the provided CycleExecuteable.",
@@ -37,6 +36,7 @@ class ApiController extends AbstractController
      * )
      * @OA\Tag(name="Ride Generator")
      */
+    #[Route(path: '/api/preview', name: 'api_preview', methods: ['POST'])]
     public function preview(Request $request, SerializerInterface $serializer, CycleFetcherInterface $cycleFetcher, CycleRideGeneratorInterface $rideGenerator): Response
     {
         /** @var CycleExecutable $cycleExecuteable */

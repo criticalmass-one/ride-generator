@@ -43,10 +43,10 @@ class Kernel extends BaseKernel
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new RideNamerPass());
+        $container->addCompilerPass(new RideNamerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 0);
         $container->registerForAutoconfiguration(RideNamerInterface::class)->addTag('ride_namer');
 
-        $container->addCompilerPass(new RideCalculatorPass());
+        $container->addCompilerPass(new RideCalculatorPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 0);
         $container->registerForAutoconfiguration(RideCalculatorInterface::class)->addTag('ride_calculator');
     }
 }
