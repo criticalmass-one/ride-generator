@@ -8,65 +8,43 @@ use App\Validator\Constraint\RideDateTime;
 
 /**
  * @RideDateTime
- * @JMS\ExclusionPolicy("all")
  */
+#[JMS\ExclusionPolicy('all')]
 class Ride
 {
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $id = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?CityCycle $cycle = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?City $city = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $slug = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $title = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $description = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon<'U'>")
-     */
+    #[JMS\Expose]
+    #[JMS\Type("Carbon<'U'>")]
     protected ?Carbon $dateTime = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $location = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?float $latitude = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?float $longitude = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected Carbon $createdAt;
 
     public function __construct()

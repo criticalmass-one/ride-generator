@@ -6,22 +6,8 @@ use JMS\Serializer\Annotation as JMS;
 
 class ErrorResult extends AbstractApiResult
 {
-    /**
-     * @JMS\Expose()
-     */
-    protected int $httpStatusCode;
-
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("array<string>")
-     */
-    protected array $errorMessageList;
-
-    public function __construct(int $httpStatusCode, array $errorMessageList)
+    public function __construct(#[JMS\Expose] protected int $httpStatusCode, #[JMS\Expose] #[JMS\Type('array<string>')] protected array $errorMessageList)
     {
-        $this->httpStatusCode = $httpStatusCode;
-        $this->errorMessageList = $errorMessageList;
-
     }
 
     public function getHttpStatusCode(): int

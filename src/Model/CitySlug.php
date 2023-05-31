@@ -4,14 +4,10 @@ namespace App\Model;
 
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @JMS\ExclusionPolicy("all")
- */
+#[JMS\ExclusionPolicy('all')]
 class CitySlug
 {
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $slug = null;
 
     public function getSlug(): string

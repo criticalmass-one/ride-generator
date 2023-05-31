@@ -5,114 +5,78 @@ namespace App\Model;
 use Carbon\Carbon;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @JMS\ExclusionPolicy("all")
- */
+#[JMS\ExclusionPolicy('all')]
 class CityCycle
 {
-    const DAY_MONDAY = 1;
-    const DAY_TUESDAY = 2;
-    const DAY_WEDNESDAY = 3;
-    const DAY_THURSDAY = 4;
-    const DAY_FRIDAY = 5;
-    const DAY_SATURDAY = 6;
-    const DAY_SUNDAY = 0;
+    final const DAY_MONDAY = 1;
+    final const DAY_TUESDAY = 2;
+    final const DAY_WEDNESDAY = 3;
+    final const DAY_THURSDAY = 4;
+    final const DAY_FRIDAY = 5;
+    final const DAY_SATURDAY = 6;
+    final const DAY_SUNDAY = 0;
 
-    const WEEK_FIRST = 1;
-    const WEEK_SECOND = 2;
-    const WEEK_THIRD = 3;
-    const WEEK_FOURTH = 4;
-    const WEEK_LAST = 0;
+    final const WEEK_FIRST = 1;
+    final const WEEK_SECOND = 2;
+    final const WEEK_THIRD = 3;
+    final const WEEK_FOURTH = 4;
+    final const WEEK_LAST = 0;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $id = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?City $city = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $dayOfWeek = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $weekOfMonth = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $time = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $location = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?float $latitude = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?float $longitude = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $createdAt = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $updatedAt = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $disabledAt = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $validFrom = null;
 
-    /**
-     * @JMS\Expose()
-     * @JMS\Type("Carbon")
-     */
+    #[JMS\Expose]
+    #[JMS\Type('Carbon')]
     protected ?Carbon $validUntil = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $rideCalculatorFqcn = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $description = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $specialDayOfWeek = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     private ?string $specialWeekOfMonth = null;
 
     public function __construct()

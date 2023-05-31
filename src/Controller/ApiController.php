@@ -5,42 +5,38 @@ namespace App\Controller;
 use App\CycleFetcher\CycleFetcherInterface;
 use App\ExecuteGenerator\CycleExecutable;
 use App\RideGenerator\CycleRideGeneratorInterface;
-use App\RideGenerator\RideGeneratorInterface;
-use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/preview", name="api_preview", methods={"POST"})
-     * @SWG\Response(
+     * @OA\Response(
      *     response=200,
      *     description="Returns a preview of the rides to be created by the provided CycleExecuteable.",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *         type="array",
-     *         @SWG\Items(ref=@Model(type=App\Model\Ride::class, groups={"full"}))
+     *         @OA\Items(ref=@Model(type=App\Model\Ride::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Parameter(
+     * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="The CycleExecuteable to create rides.",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *         type="object",
-     *         @SWG\Items(ref=@Model(type=CycleExecuteable::class, groups={"full"}))
+     *         @OA\Items(ref=@Model(type=CycleExecuteable::class, groups={"full"}))
      *     )
      * )
-     * @SWG\Tag(name="Ride Generator")
+     * @OA\Tag(name="Ride Generator")
      */
+    #[Route(path: '/api/preview', name: 'api_preview', methods: ['POST'])]
     public function preview(Request $request, SerializerInterface $serializer, CycleFetcherInterface $cycleFetcher, CycleRideGeneratorInterface $rideGenerator): Response
     {
         /** @var CycleExecutable $cycleExecuteable */

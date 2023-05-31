@@ -16,16 +16,13 @@ use Psr\Http\Message\ResponseInterface;
 class RidePusher implements RidePusherInterface
 {
     protected Client $client;
-    protected SerializerInterface $serializer;
 
-    public function __construct(SerializerInterface $serializer, string $criticalmassHostname)
+    public function __construct(protected SerializerInterface $serializer, string $criticalmassHostname)
     {
         $this->client = new Client([
             'base_uri' => $criticalmassHostname,
             'verify' => false,
         ]);
-
-        $this->serializer = $serializer;
 
         // @see https://github.com/symfony/symfony/issues/29161
         AnnotationReader::addGlobalIgnoredName('alias');
