@@ -8,7 +8,7 @@ use App\Validator\Constraint\ExecutorDateTime;
 use Carbon\Carbon;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 /**
  * @ExecutorDateTime
@@ -24,20 +24,16 @@ class CycleExecutable
     #[JMS\Expose]
     protected ?CityCycle $cityCycle = null;
 
-    /**
-     * @SWG\Property(type="datetime", description="Begin of time span to create rides.")
-     */
     #[JMS\Expose]
     #[JMS\Type("Carbon<'U'>")]
     #[Assert\GreaterThanOrEqual('1992-09-01', message: 'Vor September 1992 können keine Touren angelegt werden — das ist übrigens das Datum der allerersten Critical Mass in San Francisco.')]
+    #[OA\Property(type: 'datetime', description: 'Begin of time span to create rides.')]
     protected ?Carbon $fromDate = null;
 
-    /**
-     * @SWG\Property(type="datetime", description="End of time span to create rides.")
-     */
     #[JMS\Expose]
     #[JMS\Type("Carbon<'U'>")]
     #[Assert\LessThanOrEqual('+1 years', message: 'Touren können maximal zwölf Monate im Voraus angelegt werden.')]
+    #[OA\Property(type: 'datetime', description: 'End of time span to create rides.')]
     protected ?Carbon $untilDate = null;
 
     public function __construct()
